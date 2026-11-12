@@ -1,0 +1,390 @@
+import {
+  CardCategoryId,
+  DifficultyConfig,
+  DifficultyId,
+  EraConfig,
+  GameModeConfig,
+  GameModeId,
+  PlayerRoleConfig,
+  RegionConfig,
+  RegionId,
+} from '../types/game';
+
+export const DIFFICULTY_MODES: Record<DifficultyId, DifficultyConfig> = {
+  easy: {
+    id: 'easy',
+    name: 'Kolay Mod',
+    shortRule: 'Mevcut Dinamikler (1x Düşüş / Tam Artış)',
+    description:
+      'Mevcut temel denge dinamikleri korunur. Olumsuz ve olumlu kararlar göstergeleri standart oranda (1x) etkiler; hikayeyi daha rahat deneyimlemek isteyenler içindir.',
+  },
+  normal: {
+    id: 'normal',
+    name: 'Normal Mod (Varsayılan)',
+    shortRule: 'Hazine 2x Düşüş · Diğerleri 3x Düşüş · Tam Artış',
+    description:
+      'Varsayılan dengeli zorluk. Olumsuz kararlarda Hazine 2 katı, diğer göstergeler (Halk, Askerî, Soylular) ise 3 katı düşüş yaşar. Olumlu kararlar normal değerinde yükseltir.',
+  },
+  hard: {
+    id: 'hard',
+    name: 'Zor Mod',
+    shortRule: 'Hazine 2x Düşüş · Diğerleri 3x Düşüş · Artışlar 1-2 Puan Az',
+    description:
+      'Acımasız Westeros gerçekliği. Olumsuz kararlarda Hazine 2 katı, diğer değerler 3 katı düşer; olumlu kararlar ise normale göre 1–2 puan daha az yükseltir (örn. +3 yerine +2, +7 yerine +5).',
+  },
+};
+
+export const GAME_MODES: Record<GameModeId, GameModeConfig> = {
+  quick: {
+    id: 'quick',
+    name: 'Hızlı Mod',
+    targetDecisions: 300,
+    description:
+      '300 kararlık yoğun ve sürükleyici bir Westeros iktidar mücadelesi. Hiçbir göstergeyi sıfırlamadan 300. karara ulaşarak tahtını güvenceye al.',
+    difficultyMultiplier: 0.9,
+    nextModeId: 'normal',
+  },
+  normal: {
+    id: 'normal',
+    name: 'Normal Mod',
+    targetDecisions: 600,
+    description:
+      '600 kararlık dengeli ve kapsamlı hanedan destanı. Siyasi ittifaklar, karakter ilişkileri ve hanedan savaşları orta vadede gerçek sonuçlar doğurur.',
+    difficultyMultiplier: 1.0,
+    nextModeId: 'long',
+  },
+  long: {
+    id: 'long',
+    name: 'Uzun Mod',
+    targetDecisions: 1200,
+    description:
+      '1.200 kararlık derin strateji ve alternatif tarih senaryosu. Yüzlerce karar önce verdiğin sözler veya ihanetler yıllar sonra kapını çalar.',
+    difficultyMultiplier: 1.12,
+    nextModeId: 'competitive',
+  },
+  competitive: {
+    id: 'competitive',
+    name: 'Rekabetçi Mod',
+    targetDecisions: 6000,
+    description:
+      '6.000 kararlık nihai Westeros hayatta kalma ve imparatorluk sınavı. Kaynak yönetimi, hanedan dengeleri ve 60.000+ kartlık havuzun en zorlu krizleri seni bekliyor.',
+    difficultyMultiplier: 1.25,
+  },
+};
+
+export const ERAS: EraConfig[] = [
+  {
+    id: 'robert_reign',
+    name: 'Robert Baratheon Dönemi ve Taht Krizi',
+    years: '298 AC – Kış Yaklaşıyor',
+    summary:
+      'Jon Arryn şüpheli biçimde öldü. Kral Robert Baratheon, eski dostu Ned Stark’ı Kral Eli yapmak üzere Winterfell’e doğru yola çıkıyor. Sarayda Lannister etkisi zirvede.',
+    defaultRegion: 'kings_landing',
+    initialFlags: ['era_robert_alive', 'jon_arryn_dead', 'peace_fragile'],
+  },
+  {
+    id: 'kings_landing_crisis',
+    name: 'Ned Stark ve King’s Landing Entrikaları',
+    years: '298 AC – Kurt ve Aslan',
+    summary:
+      'Ned Stark başkentte taht varislerinin sırrını araştırıyor. Littlefinger, Varys ve Cersei Lannister arasında görünmez bir istihbarat savaşı yürütülüyor.',
+    defaultRegion: 'kings_landing',
+    initialFlags: ['ned_in_capital', 'lannister_stark_tension'],
+  },
+  {
+    id: 'war_of_five_kings',
+    name: 'Beş Kralın Savaşı ve Kızıl Düğün Gölgesi',
+    years: '299–300 AC – Kanlı Nehirler',
+    summary:
+      'Joffrey Demir Taht’ta, Robb Stark Kuzey’in Kralı ilan edildi, Stannis ve Renly Baratheon hak iddia ediyor, Balon Greyjoy ise demir donanmayı harekete geçirdi.',
+    defaultRegion: 'riverrun',
+    initialFlags: ['war_of_five_kings_active', 'robb_campaign_active'],
+  },
+  {
+    id: 'essos_and_dragons',
+    name: 'Daenerys Targaryen’in Yükselişi ve Meereen',
+    years: '300–301 AC – Ateş ve Kan',
+    summary:
+      'Üç ejderha büyüdü. Daenerys Targaryen, Unsullied, Dothraki ve Second Sons güçleriyle Köle Körfezi’nde yeni bir düzen kurarken Westeros’a dönüş planları yapıyor.',
+    defaultRegion: 'meereen_essos',
+    initialFlags: ['dragons_grown', 'daenerys_in_meereen', 'harpy_insurgency'],
+  },
+  {
+    id: 'faith_and_sparrows',
+    name: 'Faith Militant ve High Sparrow Dönemi',
+    years: '301–302 AC – İnanç ve Taht',
+    summary:
+      'Başkentte High Sparrow ve Faith Militant silahlandı. Cersei Lannister ile Tyrell hanedanı arasındaki güç mücadelesi sarayı içten çökertmek üzere.',
+    defaultRegion: 'kings_landing',
+    initialFlags: ['faith_militant_armed', 'high_sparrow_active'],
+  },
+  {
+    id: 'battle_for_north',
+    name: 'Kuzey’in Savaşı ve Battle of the Bastards',
+    years: '303 AC – Kuzey Unutmaz',
+    summary:
+      'Winterfell Bolton hanedanının elinde. Jon Snow ve Sansa Stark, Kuzey hanedanlarını ve Yabanılları birleştirerek Ramsay Bolton’a karşı yürüyor.',
+    defaultRegion: 'winterfell',
+    initialFlags: ['boltons_hold_winterfell', 'jon_and_sansa_reunited'],
+  },
+  {
+    id: 'long_night',
+    name: 'Dragonstone İttifakı ve Uzun Gece (Long Night)',
+    years: '304 AC – Ölüler Ordusu',
+    summary:
+      'Daenerys Targaryen Westeros’a ayak bastı. Duvar’ın ötesinde Night King ve Ak Gezenler ordusu güneye yürüyor; yaşayanların hayatta kalmak için birleşmesi şart.',
+    defaultRegion: 'dragonstone',
+    initialFlags: ['daenerys_in_westeros', 'night_king_marching', 'dragons_in_westeros'],
+  },
+  {
+    id: 'iron_throne_endgame',
+    name: 'King’s Landing Savaşı ve Yeni Westeros Düzeni',
+    years: '305 AC – Küller ve Taht',
+    summary:
+      'Demir Taht için son hesaplaşma vakti. Yedi Krallık’ın kaderi, hanedanların son konseyi ve Westeros’un yeni yönetim düzeni senin kararlarınla şekillenecek.',
+    defaultRegion: 'kings_landing',
+    initialFlags: ['endgame_war', 'final_council_approaching'],
+  },
+];
+
+export const PLAYER_ROLES: PlayerRoleConfig[] = [
+  {
+    id: 'noble_bannerman',
+    titlePrefix: 'Lord',
+    name: 'Büyük Hanedana Bağlı Soylu',
+    description: 'Köklü bir hanedanın sancaktarı olarak hem ordulara hem de saray diplomasisine erişimin var.',
+    startingIndicators: { people: 50, military: 55, treasury: 50, nobles: 55 },
+    bonusCharacterRelations: { ned_stark: 15, robb_stark: 12, tywin_lannister: 10 },
+  },
+  {
+    id: 'minor_lord',
+    titlePrefix: 'Lord',
+    name: 'Sınır Kalesi Lordu',
+    description: 'Halkıyla iç içe yaşayan, topraklarını dişini tırnağına takarak koruyan yerel bir hükümdar.',
+    startingIndicators: { people: 60, military: 50, treasury: 45, nobles: 45 },
+    bonusCharacterRelations: { davos_seaworth: 18, brienne_of_tarth: 12, gendry: 15 },
+  },
+  {
+    id: 'small_council_advisor',
+    titlePrefix: 'Başdanışman',
+    name: 'Küçük Konsey Danışmanı',
+    description: 'King’s Landing koridorlarında fısıltıları, hazine defterlerini ve krallığın sırlarını yöneten stratejist.',
+    startingIndicators: { people: 45, military: 45, treasury: 60, nobles: 60 },
+    bonusCharacterRelations: { tyrion_lannister: 18, varys: 16, petyr_baelish: 12, olenna_tyrell: 14 },
+  },
+  {
+    id: 'sworn_commander',
+    titlePrefix: 'Komutan',
+    name: 'Kraliyet ve Sınır Komutanı',
+    description: 'Savaş meydanlarında pişmiş, şövalyelerin ve garnizonların sadakatini kazanmış askeri lider.',
+    startingIndicators: { people: 48, military: 65, treasury: 45, nobles: 48 },
+    bonusCharacterRelations: { jon_snow: 16, jaime_lannister: 12, grey_worm: 15, tormund_giantsbane: 14 },
+  },
+  {
+    id: 'courtier',
+    titlePrefix: 'Saray Mensubu',
+    name: 'Kızıl Kale Saray Mensubu',
+    description: 'Ziyafetlerde, turnuvalarda ve gizli buluşmalarda soyluların nabzını tutan usta bir saraylı.',
+    startingIndicators: { people: 48, military: 42, treasury: 55, nobles: 62 },
+    bonusCharacterRelations: { margaery_tyrell: 20, sansa_stark: 15, cersei_lannister: 10 },
+  },
+  {
+    id: 'diplomat',
+    titlePrefix: 'Elçi',
+    name: 'Yedi Krallık Başelçisi',
+    description: 'Dorne’dan Kuzey’e, Özgür Şehirler’den Demir Adalar’a kadar barış ve ittifak antlaşmalarının mimarı.',
+    startingIndicators: { people: 55, military: 45, treasury: 55, nobles: 55 },
+    bonusCharacterRelations: { oberyn_martell: 15, daenerys_targaryen: 14, missandei: 18, tyrion_lannister: 14 },
+  },
+  {
+    id: 'sellsword_captain',
+    titlePrefix: 'Yüzbaşı',
+    name: 'Paralı Asker Kaptanı',
+    description: 'Altın ve zafer uğruna kılıç sallayan, özgür kumpanyaları ve tehlikeli görevleri yöneten savaşçı.',
+    startingIndicators: { people: 45, military: 60, treasury: 58, nobles: 42 },
+    bonusCharacterRelations: { bronn: 25, daario_naharis: 20, sandor_clegane: 14 },
+  },
+  {
+    id: 'throne_claimant',
+    titlePrefix: 'Hükümdar',
+    name: 'Taht İddiacısı',
+    description: 'Demir Taht veya bağımsız bir krallık üzerinde doğrudan hak iddia eden, kaderini kan ve ateşle yazan lider.',
+    startingIndicators: { people: 52, military: 52, treasury: 52, nobles: 52 },
+    bonusCharacterRelations: { daenerys_targaryen: 10, jon_snow: 10, stannis_baratheon: -10, cersei_lannister: -10 },
+  },
+];
+
+export const REGIONS: Record<RegionId, RegionConfig> = {
+  kings_landing: {
+    id: 'kings_landing',
+    name: "King's Landing",
+    turkishSubtitle: 'Kızıl Kale ve Demir Taht’ın Kalbi',
+    house: 'Crownlands / Demir Taht',
+    atmosphereColor: '#1f0d12',
+    accentColor: '#d4af37',
+    particleType: 'gold',
+    description: 'Entrikaların, Küçük Konsey fısıltılarının, altın pelerinlilerin ve çan seslerinin yankılandığı başkent.',
+  },
+  winterfell: {
+    id: 'winterfell',
+    name: 'Winterfell',
+    turkishSubtitle: 'Kuzey’in Kadim Kalesi',
+    house: 'House Stark',
+    atmosphereColor: '#0f1722',
+    accentColor: '#94a3b8',
+    particleType: 'snow',
+    description: 'Yürek ağaçlarının, sıcak kaplıcaların ve sert kış rüzgârlarının hüküm sürdüğü Kuzey’in kalesi.',
+  },
+  dragonstone: {
+    id: 'dragonstone',
+    name: 'Dragonstone',
+    turkishSubtitle: 'Ejderha Kayası ve Boyalı Masa',
+    house: 'House Targaryen / Baratheon',
+    atmosphereColor: '#180c0c',
+    accentColor: '#ef4444',
+    particleType: 'embers',
+    description: 'Volkanik obsidyen kayalıklar üzerinde yükselen, ejderha kabartmalarıyla bezeli stratejik ada kalesi.',
+  },
+  the_wall: {
+    id: 'the_wall',
+    name: 'The Wall & Castle Black',
+    turkishSubtitle: 'Duvar ve Gece Nöbeti',
+    house: "Night's Watch",
+    atmosphereColor: '#09131c',
+    accentColor: '#38bdf8',
+    particleType: 'snow',
+    description: 'Yüzlerce metre yüksekliğindeki kadim buz duvarı; diyarları karanlığın dehşetinden koruyan son kalkan.',
+  },
+  meereen_essos: {
+    id: 'meereen_essos',
+    name: 'Meereen & Essos',
+    turkishSubtitle: 'Köle Körfezi ve Özgür Şehirler',
+    house: 'House Targaryen / Essos',
+    atmosphereColor: '#1f160d',
+    accentColor: '#f59e0b',
+    particleType: 'sand',
+    description: 'Büyük piramitlerin, Dothraki bozkırlarının ve egzotik ticaret limanlarının uzandığı doğu kıtası.',
+  },
+  casterly_rock: {
+    id: 'casterly_rock',
+    name: 'Casterly Rock',
+    turkishSubtitle: 'Batı Toprakları ve Altın Madenleri',
+    house: 'House Lannister',
+    atmosphereColor: '#210e0e',
+    accentColor: '#eab308',
+    particleType: 'gold',
+    description: 'Denize bakan devasa kayanın içine oyulmuş, Lannister zenginliğinin ve gücünün yenilmez sembolü.',
+  },
+  highgarden: {
+    id: 'highgarden',
+    name: 'Highgarden',
+    turkishSubtitle: 'Menzil’in Bereketli Bahçeleri',
+    house: 'House Tyrell',
+    atmosphereColor: '#0e1c14',
+    accentColor: '#10b981',
+    particleType: 'gold',
+    description: 'Altın güllerin, şövalye turnuvalarının ve krallığı doyuran uçsuz bucaksız hasat tarlalarının merkezi.',
+  },
+  sunspear_dorne: {
+    id: 'sunspear_dorne',
+    name: 'Sunspear & Dorne',
+    turkishSubtitle: 'Kızıl Çöller ve Su Bahçeleri',
+    house: 'House Martell',
+    atmosphereColor: '#24120b',
+    accentColor: '#f97316',
+    particleType: 'sand',
+    description: 'Boyun eğmeyen, kırılmayan ve unutmayan Martell hanedanının kavurucu güneş altındaki kalesi.',
+  },
+  pyke_iron_islands: {
+    id: 'pyke_iron_islands',
+    name: 'Pyke & Iron Islands',
+    turkishSubtitle: 'Demir Adalar ve Fırtınalı Kayalıklar',
+    house: 'House Greyjoy',
+    atmosphereColor: '#0d151c',
+    accentColor: '#64748b',
+    particleType: 'rain',
+    description: 'Azgın dalgaların dövdüğü kayalık kuleler ve demir bedeli ödeyen denizcilerin sert vatanı.',
+  },
+  riverrun: {
+    id: 'riverrun',
+    name: 'Riverrun & Riverlands',
+    turkishSubtitle: 'Üç Nehir ve Nehir Toprakları',
+    house: 'House Tully',
+    atmosphereColor: '#101820',
+    accentColor: '#3b82f6',
+    particleType: 'mist',
+    description: 'Kızıl Çatal ile Taş Değirmen nehirlerinin kesiştiği, her büyük savaşın cephe hattı olan stratejik kale.',
+  },
+  eyrie_vale: {
+    id: 'eyrie_vale',
+    name: 'The Eyrie & The Vale',
+    turkishSubtitle: 'Kartal Yuvası ve Ay Dağları',
+    house: 'House Arryn',
+    atmosphereColor: '#0f1726',
+    accentColor: '#60a5fa',
+    particleType: 'mist',
+    description: 'Bulutların üzerinde yükselen, Kanlı Kapı ve Ay Kapısı ile korunan aşılmaz dağ kalesi.',
+  },
+  storms_end: {
+    id: 'storms_end',
+    name: "Storm's End",
+    turkishSubtitle: 'Fırtına Burnu ve Gemi Kıran Körfezi',
+    house: 'House Baratheon',
+    atmosphereColor: '#14131c',
+    accentColor: '#facc15',
+    particleType: 'rain',
+    description: 'Binlerce yıllık fırtınalara ve kuşatmalara göğüs germiş devasa taş surlu Baratheon kalesi.',
+  },
+};
+
+export interface CategoryMeta {
+  id: CardCategoryId;
+  index: number;
+  name: string;
+  description: string;
+}
+
+export const CARD_CATEGORIES: CategoryMeta[] = [
+  { id: 'cat_01_main_story', index: 1, name: 'Ana Hikâye Olayları', description: 'Yedi Krallık’ın kaderini belirleyen kırılma noktaları ve sezonluk ana olaylar.' },
+  { id: 'cat_02_dynasty_struggles', index: 2, name: 'Hanedan Mücadeleleri', description: 'Büyük hanedanlar arasındaki üstünlük, prestij ve toprak çekişmeleri.' },
+  { id: 'cat_03_throne_games', index: 3, name: 'Taht Oyunları', description: 'Demir Taht ve bölgesel krallıklar üzerindeki meşruiyet ve güç hamleleri.' },
+  { id: 'cat_04_political_intrigues', index: 4, name: 'Siyasi Entrikalar', description: 'Saray koridorlarında kurulan gizli kumpaslar, şantajlar ve kulis pazarlıkları.' },
+  { id: 'cat_05_assassination_attempts', index: 5, name: 'Suikast Girişimleri', description: 'Zehirli kadehler, gölge suikastçılar, Yüzsüz Adamlar ve kiralık bıçaklar.' },
+  { id: 'cat_06_betrayals', index: 6, name: 'İhanetler', description: 'Sancaktarların, danışmanların ve müttefiklerin beklenmedik saf değiştirmeleri.' },
+  { id: 'cat_07_diplomatic_talks', index: 7, name: 'Diplomatik Görüşmeler', description: 'Ateşkes masaları, sınır anlaşmaları, elçi kabulleri ve barış şartları.' },
+  { id: 'cat_08_marriage_proposals', index: 8, name: 'Evlilik Teklifleri', description: 'Hanedanları kan bağıyla birleştiren siyasi izdivaçlar ve çeyiz pazarlıkları.' },
+  { id: 'cat_09_love_and_romance', index: 9, name: 'Aşk ve Romantik İlişkiler', description: 'Kalbin görevle çatıştığı gizli tutkular, sadakat sınavları ve yakınlaşmalar.' },
+  { id: 'cat_10_wars', index: 10, name: 'Savaşlar', description: 'Meydan muharebeleri, süvari hücumları, nehir geçişleri ve cephe kararları.' },
+  { id: 'cat_11_sieges', index: 11, name: 'Kuşatmalar', description: 'Kale savunmaları, erzak krizleri, mancınık ateşleri ve tünel baskınları.' },
+  { id: 'cat_12_military_strategies', index: 12, name: 'Askerî Stratejiler', description: 'Ordu ikmali, garnizon konuşlandırma, komutan atamaları ve pusu planları.' },
+  { id: 'cat_13_popular_rebellions', index: 13, name: 'Halk İsyanları', description: 'Flea Bottom ayaklanmaları, köylü isyanları ve açlıkla tetiklenen kalkışmalar.' },
+  { id: 'cat_14_tax_and_economy', index: 14, name: 'Vergi ve Ekonomi Kararları', description: 'Demir Bankası borçları, altın madenleri, gümrük vergileri ve hazine yönetimi.' },
+  { id: 'cat_15_trade_and_resources', index: 15, name: 'Ticaret ve Kaynak Yönetimi', description: 'Tahıl kervanları, Özgür Şehirler deniz ticareti, demir ve kereste stokları.' },
+  { id: 'cat_16_religion_and_faith', index: 16, name: 'Din ve İnanç Mücadeleleri', description: 'Yedi İnancı, Eski Tanrılar, Işık Tanrısı (R’hllor) ve Boğulmuş Tanrı gerilimleri.' },
+  { id: 'cat_17_nights_watch_wall', index: 17, name: 'Gece Nöbeti ve Duvar Olayları', description: 'Castle Black garnizonu, Yabanıl akınları, nöbetçi isyanları ve Duvar savunması.' },
+  { id: 'cat_18_white_walkers_others', index: 18, name: 'Ak Gezenler ve Ötekiler', description: 'Night King, ölüler ordusu, ejderha camı (obsidyen) sevkiyatı ve Uzun Gece.' },
+  { id: 'cat_19_dragons_and_riders', index: 19, name: 'Ejderhalar ve Ejderha Binicileri', description: 'Drogon, Rhaegal ve Viserion’un kontrolü, ejderha ateşi ve gökyüzü hâkimiyeti.' },
+  { id: 'cat_20_house_targaryen', index: 20, name: 'Targaryen Hanedanı Olayları', description: 'Ateş ve Kan mirası, Valyria gelenekleri ve Targaryen meşruiyet krizleri.' },
+  { id: 'cat_21_house_stark', index: 21, name: 'Stark Hanedanı Olayları', description: 'Winterfell onuru, ulukurtlar, Kuzey lordlarının sadakati ve kış hazırlıkları.' },
+  { id: 'cat_22_house_lannister', index: 22, name: 'Lannister Hanedanı Olayları', description: 'Casterly Rock altınları, aile içi güç savaşları ve borçların ödenmesi.' },
+  { id: 'cat_23_house_baratheon', index: 23, name: 'Baratheon Hanedanı Olayları', description: 'Fırtına Toprakları kardeş kavgası, geyik sancağı ve demir irade.' },
+  { id: 'cat_24_house_greyjoy', index: 24, name: 'Greyjoy Hanedanı Olayları', description: 'Demir Donanma yağmaları, Deniztaşı Kürsüsü (Kingsmoot) ve deniz üstünlüğü.' },
+  { id: 'cat_25_house_tyrell', index: 25, name: 'Tyrell Hanedanı Olayları', description: 'Highgarden hasadı, saray zarafeti, dikenli siyaset ve gıda ambargoları.' },
+  { id: 'cat_26_house_martell', index: 26, name: 'Martell Hanedanı Olayları', description: 'Dorne intikamı, Kum Yılanları, çöl diplomasisi ve zehirli mızraklar.' },
+  { id: 'cat_27_house_arryn', index: 27, name: 'Arryn Hanedanı Olayları', description: 'Vadi şövalyeleri, Kartal Yuvası tarafsızlığı ve Kanlı Kapı savunması.' },
+  { id: 'cat_28_house_tully', index: 28, name: 'Tully Hanedanı Olayları', description: 'Aile, Görev, Onur ilkesi, İkizler geçişi ve Nehir Toprakları savunması.' },
+  { id: 'cat_29_small_council', index: 29, name: 'Küçük Konsey ve Saray Yönetimi', description: 'Kral Eli, Fısıltılar Efendisi, Sikke Efendisi ve Üstatlar arasındaki kararlar.' },
+  { id: 'cat_30_personal_troubles', index: 30, name: 'Karakterlerin Kişisel Sorunları', description: 'Ana karakterlerin vicdan muhasebeleri, travmaları, sadakat ve onur ikilemleri.' },
+  { id: 'cat_31_family_relations', index: 31, name: 'Aile İlişkileri', description: 'Kardeş rekabetleri, ebeveyn beklentileri ve hanedan içi kan bağları.' },
+  { id: 'cat_32_children_and_heirs', index: 32, name: 'Çocuklar ve Varisler', description: 'Veliaht eğitimi, meşruiyet tartışmaları, vesayet ve miras kavgaları.' },
+  { id: 'cat_33_spies_and_intel', index: 33, name: 'Casuslar ve Bilgi Ağları', description: 'Küçük kuşlar, şifreli kuzgun mektupları, çift taraflı ajanlar ve dezenformasyon.' },
+  { id: 'cat_34_commonfolk_daily', index: 34, name: 'Halkın Günlük Yaşamı', description: 'Zanaatkâr loncaları, hanlar, köylü dilekçeleri ve şehir güvenliği.' },
+  { id: 'cat_35_plagues_and_epidemics', index: 35, name: 'Hastalıklar ve Salgınlar', description: 'Gri Pul (Greyscale), kanlı akıntı, karantina kararları ve Hisar üstatları.' },
+  { id: 'cat_36_famines_and_disasters', index: 36, name: 'Kıtlıklar ve Doğal Afetler', description: 'Uzun kış stokları, kuraklık, fırtınada batan filolar ve çılgınateş kazaları.' },
+  { id: 'cat_37_escape_exile_captivity', index: 37, name: 'Kaçış, Sürgün ve Esaret', description: 'Zindan pazarlıkları, fidye anlaşmaları, gizli tüneller ve Essos sürgünleri.' },
+  { id: 'cat_38_courts_and_justice', index: 38, name: 'Mahkemeler ve Adalet', description: 'Dövüşle yargılama (Trial by Combat), vatana ihanet davaları ve Gece Nöbeti cezaları.' },
+  { id: 'cat_39_tournaments_chivalry', index: 39, name: 'Turnuvalar ve Şövalyelik', description: 'Mızrak dövüşleri, yakın dövüş arenaları, Kral Muhafızları seçimleri ve onur.' },
+  { id: 'cat_40_explorations_distant', index: 40, name: 'Keşifler ve Uzak Diyarlar', description: 'Braavos, Volantis, Qarth, Asshai ve Batı’nın ötesindeki bilinmeyen denizler.' },
+  { id: 'cat_41_magic_prophecy', index: 41, name: 'Büyü, Kehanet ve Doğaüstü Olaylar', description: 'Üç Gözlü Kuzgun görüleri, Kızıl Rahibelerin ateş kehanetleri ve warg yetenekleri.' },
+  { id: 'cat_42_alternate_history', index: 42, name: 'Alternatif Tarih ve Beklenmedik Karşılaşmalar', description: 'Kaderin akışını değiştiren kurtuluşlar, beklenmedik ittifaklar ve kırılan kehanetler.' },
+];

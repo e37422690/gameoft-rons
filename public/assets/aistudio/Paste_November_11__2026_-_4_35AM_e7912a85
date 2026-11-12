@@ -1,0 +1,1377 @@
+# PROJE: GAME OF THRONES – TAHTIN GÖLGESİNDE
+## Reigns tarzı, devasa içerikli, dallanan hikâyelere sahip stratejik kart ve hayatta kalma oyunu
+
+Sen deneyimli bir oyun tasarımcısı, oyun yazarı, hikâye anlatıcısı, UI/UX tasarımcısı ve kıdemli web yazılım geliştiricisisin.
+
+Senden istediğim şey basit bir kart oyunu prototipi değil. Game of Thrones evreninden esinlenen, Reigns oyunlarının temel karar mekaniklerini kullanan, son derece kapsamlı, uzun süre oynanabilen, hikâye odaklı ve tekrar oynanabilirliği yüksek bir tarayıcı oyunu geliştirmen.
+
+Oyunun adı şimdilik **Tahtın Gölgesinde – Game of Thrones** olsun.
+
+Oyunun bütün metinleri Türkçe olacak. Özel isimler, hanedanlar, bölgeler ve karakter isimleri orijinal isimleriyle korunacak.
+
+En önemli önceliklerin:
+- Oynanabilirlik.
+- Hikâye ve evren tutarlılığı.
+- Kararların gerçek sonuçlar doğurması.
+- Çok yüksek senaryo çeşitliliği.
+- Karakter ilişkilerinin dinamik olması.
+- Uzun süreli oynanabilirlik.
+- Güvenilir ve kesintisiz kayıt sistemi.
+- Görsel açıdan kaliteli, özgün ve atmosferik tasarım.
+
+Yalnızca fikir veya tasarım belgesi hazırlama. Çalışan oyunu oluştur, dosyalarını düzenle, mekanikleri uygula, test et ve hatalarını gider.
+
+---
+
+# 1. TEMEL OYUN MEKANİĞİ
+
+Oyun, Reigns benzeri bir kart kaydırma sistemi üzerine kurulacak.
+
+Ekranın merkezinde bir karar kartı bulunacak. Kartın üzerinde:
+- Olayı anlatan kısa ama etkileyici bir hikâye metni.
+- Olayı yaşayan karakterin küçük portresi.
+- Karakterin adı ve unvanı.
+- Gerektiğinde olayın gerçekleştiği bölge.
+- İki farklı karar seçeneği.
+
+bulunacak.
+
+Oyuncu kartı:
+- Sola kaydırarak birinci seçeneği,
+- Sağa kaydırarak ikinci seçeneği
+
+uygulayacak.
+
+Mobilde dokunmatik kaydırma, bilgisayarda fareyle sürükleme ve klavye kontrolleri desteklenecek. Ayrıca kartın altında iki seçeneği açıkça belirten tıklanabilir butonlar bulunacak.
+
+Her karar sonrasında:
+1. Kartın hikâyesi tamamlanacak.
+2. Seçimin sonuçları uygulanacak.
+3. Dört temel gösterge güncellenecek.
+4. İlgili karakterlerin ilişkileri değişecek.
+5. Gerekli hikâye bayrakları ve geçmiş olaylar kaydedilecek.
+6. Yeni olayın koşulları değerlendirilecek.
+7. Sonraki kart gösterilecek.
+8. Oyun otomatik kaydedilecek.
+
+Kararların sonuçları yalnızca göstergelerdeki sayısal değişimlerden ibaret olmayacak. Bazı kararlar gelecekte karşılaşılacak olayları, karakterlerin davranışlarını, savaşları, ittifakları, ihanetleri ve alternatif hikâye yollarını değiştirecek.
+
+Her karar bir olayın parçası olmalı. Oyuncuya sürekli birbirinden kopuk, anlamsız sorular sunma.
+
+# 2. DÖRT TEMEL GÖSTERGE
+
+Ekranın üst bölümünde dört temel gösterge bulunacak.
+
+Bunlar:
+
+1. **Halkın Desteği**
+   - Halkın sana ve yönetimine duyduğu güven.
+   - Halk isyanları, kıtlık, vergiler, adalet, savaş kayıpları ve ekonomik kararlarla değişir.
+   - Sıfıra düşerse halk ayaklanabilir, şehirler kontrolünden çıkabilir veya yönetimin devrilebilir.
+
+2. **Askerî Güç**
+   - Ordunun, muhafızların, savaşçıların ve askerî kaynakların gücü.
+   - Savaşlar, kayıplar, ittifaklar, asker toplama ve askerî harcamalarla değişir.
+   - Sıfıra düşerse düşman kuvvetleri seni yenebilir, topraklarını işgal edebilir veya öldürebilir.
+
+3. **Hazine**
+   - Yönetiminin ekonomik gücü ve kullanılabilir kaynakları.
+   - Vergiler, ticaret, borçlar, savaşlar, saray harcamaları ve ekonomik politikalarla değişir.
+   - Sıfıra düşerse askerlerin maaş alamaz, ittifakların bozulabilir, halkın öfkelenebilir veya yönetimin çökebilir.
+
+4. **Soyluların ve Siyasi Güçlerin Desteği**
+   - Büyük hanedanların, lordların, danışmanların ve saraydaki güçlü grupların sana duyduğu güven.
+   - Evlilikler, ittifaklar, ihanetler, siyasi kararlar, infazlar ve güç mücadeleleriyle değişir.
+   - Sıfıra düşerse saray darbesi, suikast, taht iddiası veya iç savaşla karşılaşabilirsin.
+
+Her gösterge 0–100 arasında olacak.
+
+Göstergelerin:
+- Her kararın ardından akıcı animasyonla değişmesi.
+- Artış ve azalışların farklı renklerle gösterilmesi.
+- Kritik seviyelerde uyarı vermesi.
+- Tehlikeli seviyelerde özel görsel efektler kullanması.
+- Oyuncuya neden değiştiğinin kısa açıklamasını göstermesi.
+
+gerekiyor.
+
+ÖNEMLİ: Her kartın hangi göstergeleri etkileyeceğini önceden sabit bir şablona bağlama. Olayın bağlamına göre sonuçları sen belirle.
+
+Örneğin:
+- Halkı koruyan bir karar halk desteğini artırabilir ama hazineyi azaltabilir.
+- Bir hanedanın askerî desteğini kazanmak askerî gücü artırabilir ama başka bir hanedanın desteğini düşürebilir.
+- Ejderhaları kullanmak düşmanları korkutabilir ama halkın desteğini azaltabilir.
+- Dini bir kurumu desteklemek inancı ve siyasi desteği artırabilir ama başka grupları rahatsız edebilir.
+
+Bazı kararlar bir göstergeyi artırırken diğer üçünü de etkileyebilir. Bazıları ise beklenmedik sonuçlar doğurabilir.
+
+Her gösterge sıfıra ulaştığında oyun sona erecek. Ancak sona eriş şekli, o anki hikâyeye ve göstergelerin durumuna göre değişecek.
+
+Örneğin askerî gücün sıfırlanması her zaman aynı şekilde sonuçlanmamalı. Düşman ordusu tarafından esir alınmak, bir kalenin düşmesi, ihanet sonucu öldürülmek veya savaş meydanında yenilmek gibi farklı sonuçlar bulunmalı.
+
+Ayrıca 100 seviyesine ulaşmak da otomatik olarak oyunun bitmesine neden olmamalı. Bunun yerine bazı göstergelerin aşırı yükselmesi farklı siyasi veya toplumsal sorunlar yaratabilmeli. Örneğin halk desteğinin çok yüksek olması soyluları korkutabilir.
+
+# 3. DÖRT OYUN MODU
+
+Oyunda dört farklı zorluk ve süre modu bulunacak.
+
+<PRIVATE_PERSON> gibi geçici bir yer tutucu kullanma. Aşağıdaki isimleri aynen uygula.
+
+### A. Hızlı Mod
+- Kazanmak için 300 kartlık karar serisini tamamlamak gerekiyor.
+- 300 karar boyunca hiçbir gösterge sıfırlanmamalı.
+- 300. karar başarıyla tamamlandığında oyuncu kazanmalı.
+- Oyuncuya kısa ama tatmin edici bir hikâye deneyimi sunmalı.
+
+### B. Normal Mod
+- Kazanmak için 600 kartlık karar serisini tamamlamak gerekiyor.
+- 600 karar boyunca hayatta kalınmalı.
+- Hikâye daha kapsamlı gelişmeli.
+- Karakter ilişkileri ve siyasi dengeler daha fazla önem kazanmalı.
+
+### C. Uzun Mod
+- Kazanmak için 1.200 kartlık karar serisini tamamlamak gerekiyor.
+- Hikâye çok daha fazla olay, karakter ve alternatif senaryo içermeli.
+- Önceki kararların sonuçları uzun süre sonra yeniden karşımıza çıkabilmeli.
+
+### D. Rekabetçi Mod
+- Kazanmak için 6.000 kartlık karar serisini tamamlamak gerekiyor.
+- Bu mod en kapsamlı ve en zor deneyim olmalı.
+- Kaynak yönetimi, karakter ilişkileri, siyasi dengeler ve geçmiş kararların sonuçları çok daha önemli olmalı.
+- Uzun süreli hikâye tutarlılığı korunmalı.
+- Tekrarlanan kartlar ve anlamsız olaylar mümkün olduğunca engellenmeli.
+- Oyuncunun 6.000 karar boyunca aynı basit stratejiyi kullanarak kolayca kazanması mümkün olmamalı.
+
+### Oyun modu yükseltme sistemi
+
+Bir oyuncu oyun modunu başarıyla tamamladığında, isterse mevcut oyununu bir üst moda yükseltebilmeli.
+
+Yükseltmeler:
+- Hızlı → Normal (300'den 600'e).
+- Normal → Uzun (600'den 1.200'e).
+- Uzun → Rekabetçi (1.200'den 6.000'e).
+
+Örneğin Hızlı Mod'da 300 kararı başarıyla tamamlayan oyuncu, isterse aynı karakteri, ilişkileri, göstergeleri ve hikâye durumunu koruyarak 301. karardan itibaren Normal Mod'a devam edebilmeli.
+
+Aynı şekilde Normal'den Uzun'a ve Uzun'dan Rekabetçi'ye geçilebilmeli.
+
+Oyuncu hiçbir zaman daha kısa bir moda düşürülememeli.
+
+Mod yükseltildiğinde:
+- Mevcut ilerleme silinmemeli.
+- Kart sayacı sıfırlanmamalı.
+- Karakter ilişkileri korunmalı.
+- Geçmiş kararlar korunmalı.
+- Göstergeler korunmalı.
+- Hikâye bayrakları korunmalı.
+
+Mod yükseltme yalnızca ilgili modu başarıyla bitiren oyuncuya sunulmalı.
+
+# 4. 60.000 KARTLIK DEV SENARYO HAVUZU
+
+Oyunun en önemli özelliklerinden biri çok geniş bir kart ve senaryo havuzu olacak.
+
+Toplamda en az **60.000 farklı oynanabilir kart varyasyonu** oluştur.
+
+Burada önemli bir ayrıntı var:
+
+60.000 kartı yalnızca aynı metni farklı karakter isimleriyle değiştirerek oluşturmanı istemiyorum.
+
+Her kartın kendine özgü:
+- Olay kimliği.
+- Hikâye metni.
+- Karakteri veya olay kaynağı.
+- Mekânı.
+- Tarihsel veya alternatif hikâye bağlamı.
+- İki karar seçeneği.
+- Seçeneklerin gösterge etkileri.
+- Karakter ilişkilerine etkileri.
+- Hikâye sonuçları.
+- Ön koşulları.
+- Sonraki olaylarla bağlantıları.
+
+olmalı.
+
+Kartların bir kısmı ana hikâyeden, bir kısmı karakterlerin kişisel hikâyelerinden, bir kısmı siyasi olaylardan, bir kısmı savaşlardan, bir kısmı da tamamen alternatif senaryolardan oluşmalı.
+
+### Kart kategorileri
+
+En az şu kategorileri oluştur:
+
+1. Ana hikâye olayları.
+2. Hanedan mücadeleleri.
+3. Taht oyunları.
+4. Siyasi entrikalar.
+5. Suikast girişimleri.
+6. İhanetler.
+7. Diplomatik görüşmeler.
+8. Evlilik teklifleri.
+9. Aşk ve romantik ilişkiler.
+10. Savaşlar.
+11. Kuşatmalar.
+12. Askerî stratejiler.
+13. Halk isyanları.
+14. Vergi ve ekonomi kararları.
+15. Ticaret ve kaynak yönetimi.
+16. Din ve inanç mücadeleleri.
+17. Gece Nöbeti ve Duvar olayları.
+18. Ak Gezenler ve Ötekiler.
+19. Ejderhalar ve ejderha binicileri.
+20. Targaryen hanedanı olayları.
+21. Stark hanedanı olayları.
+22. Lannister hanedanı olayları.
+23. Baratheon hanedanı olayları.
+24. Greyjoy hanedanı olayları.
+25. Tyrell hanedanı olayları.
+26. Martell hanedanı olayları.
+27. Arryn hanedanı olayları.
+28. Tully hanedanı olayları.
+29. Küçük konsey ve saray yönetimi.
+30. Karakterlerin kişisel sorunları.
+31. Aile ilişkileri.
+32. Çocuklar ve varisler.
+33. Casuslar ve bilgi ağları.
+34. Halkın günlük yaşamı.
+35. Hastalıklar ve salgınlar.
+36. Kıtlıklar ve doğal afetler.
+37. Kaçış, sürgün ve esaret.
+38. Mahkemeler ve adalet.
+39. Turnuvalar ve şövalyelik.
+40. Keşifler ve uzak diyarlar.
+41. Büyü, kehanet ve doğaüstü olaylar.
+42. Alternatif tarih ve beklenmedik karşılaşmalar.
+
+Bunların dışında evrenin gerektirdiği yeni kategorileri de ekle.
+
+### 60.000 kartın oluşturulma yöntemi
+
+Bu kadar büyük bir içeriği tek bir JavaScript dosyasına yığma.
+
+İçerikleri kategorilere ve mümkünse ayrı JSON veri paketlerine böl.
+
+Önerilen yaklaşım:
+- Temel senaryo havuzu.
+- Karakter senaryoları.
+- Hanedan senaryoları.
+- Bölge senaryoları.
+- Savaş ve diplomasi senaryoları.
+- Alternatif tarih senaryoları.
+- İlişki odaklı senaryolar.
+- Özel ve nadir olaylar.
+
+60.000 hedefini gerçekten karşıla. İçerik sayısını sahte biçimde 60.000'e çıkarmak için aynı kartı kopyalama.
+
+Mümkünse binlerce özgün temel senaryo ile bunların anlamlı ve bağlama duyarlı varyasyonlarını kullan. Varyasyonlar yalnızca isim değiştirmemeli; olayın anlatımı, karar seçenekleri, sonuçları ve bağlamı da değişmeli.
+
+Kart havuzunu üretim sırasında sayılabilir ve denetlenebilir tut. Her kartın benzersiz ID'si olsun.
+
+60.000 kartın tamamı ilk aşamada üretilemiyorsa:
+- Önce çalışan oyun motorunu oluştur.
+- Sonra içerikleri kategorilere göre paketler hâlinde üret.
+- Her paketteki kartları doğrula.
+- Tamamlanan kart sayısını manifest dosyasında tut.
+- Eksik kart sayısını açıkça göster.
+- 60.000 tamamlanmadan tamamlanmış gibi davranma.
+- İçerik üretimine kaldığın yerden devam edebilecek bir sistem kur.
+
+Oyun motoru içerik paketleri yüklenmeden de çalışabilmeli. Ancak mevcut içerik sayısı 60.000'e ulaşmadan bu hedefin tamamlandığını iddia etme.
+
+# 5. GAME OF THRONES EVRENİ VE HİKÂYE TUTARLILIĞI
+
+Oyunun ana referansı HBO Game of Thrones dizisinin sekiz sezonluk evreni olsun.
+
+Önemli olaylar, karakterler, hanedanlar, coğrafyalar, savaşlar, siyasi gelişmeler ve karakter ilişkileri mümkün olduğunca ana hikâyeyle tutarlı biçimde işlenmeli.
+
+Kitaplarda olup dizide bulunmayan veya farklı gelişen olayları kullanırsan bunları ayrı bir alternatif senaryo olarak değerlendir. İki farklı sürekliliği sessizce birbirine karıştırma.
+
+### Evrenin kapsanması gereken başlıca olayları
+
+- Robert Baratheon dönemi ve sonrasındaki taht krizi.
+- Ned Stark'ın King's Landing'e gelişi.
+- Stark ve Lannister arasındaki çatışma.
+- Beş Kralın Savaşı.
+- Robb Stark'ın Kuzey'deki mücadelesi.
+- Kızıl Düğün.
+- Joffrey Baratheon'un hükümdarlığı.
+- Tyrion'ın siyasi ve hukuki mücadeleleri.
+- Daenerys Targaryen'in Essos'taki yükselişi.
+- Dothraki, Unsullied ve Second Sons.
+- Meereen'deki siyasi sorunlar.
+- Stannis Baratheon'un taht mücadelesi.
+- Jon Snow ve Gece Nöbeti.
+- Duvar'ın kuzeyindeki olaylar.
+- Ak Gezenler ve Ötekiler.
+- Hardhome.
+- Arya Stark'ın yolculuğu.
+- Sansa Stark'ın siyasi gelişimi.
+- Cersei Lannister'ın iktidar mücadelesi.
+- Faith Militant.
+- High Sparrow.
+- Ramsay Bolton ve Kuzey.
+- Battle of the Bastards.
+- Daenerys'in Westeros'a dönüşü.
+- Dragonstone ve büyük ittifaklar.
+- Night King ve Long Night.
+- King's Landing savaşı.
+- Demir Taht'ın sonu.
+- Westeros'un yeni siyasi düzeni.
+
+Bu olayları yalnızca kart metni olarak sunma. Oyuncunun bunlara katılabileceği, bazılarını değiştirebileceği ve alternatif sonuçlara ulaşabileceği bir hikâye sistemi kur.
+
+### Canon ve alternatif tarih
+
+Gerçek hikâyedeki olaylar oyunun temelini oluşturmalı.
+
+Ancak oyuncunun seçimleri sonucunda:
+- Bazı karakterler hayatta kalabilmeli.
+- Bazı savaşlar farklı sonuçlanabilmeli.
+- Hanedanlar güçlenebilmeli veya yok olabilmeli.
+- İttifaklar kurulabilmeli ve bozulabilmeli.
+- Tahtın sahibi değişebilmeli.
+- Bazı karakterler hiç beklenmedik biçimde müttefik olabilmeli.
+- Önemli tarihsel olaylar engellenebilmeli veya farklı sonuçlanabilmeli.
+
+Örneğin oyuncu Ned Stark'ı kurtarmayı başarırsa bunun gelecekteki hikâyeye etkisi olmalı. Robb Stark'ın ölümünü engellerse Kuzey'deki güç dengeleri değişmeli. Daenerys ile ittifak kurarsa bu ilişkinin sonuçları sonraki olaylarda hissedilmeli.
+
+Bir karakter ölmüşse, hikâyede mantıklı bir gerekçe olmadan tekrar canlıymış gibi karşımıza çıkmamalı.
+
+Geçmişte gerçekleşmiş olaylar, oyuncunun alternatif zaman çizgisinde aldığı kararlarla çelişmemeli.
+
+### Hikâye başlangıcı ve oyuncunun kimliği
+
+Oyuncunun kendisini evrene ait hissetmesini sağla.
+
+Oyun başında oyuncudan adı istenmeli. Oyuncu bu isimle hikâyede anılmalı.
+
+Oyuncunun kendi rolü de belirlenebilmeli. Örneğin:
+- Bir hanedana bağlı soylu.
+- Küçük bir lord.
+- Bir danışman.
+- Bir komutan.
+- Bir saray mensubu.
+- Bir diplomat.
+- Bir paralı asker.
+- Bir yönetici veya taht iddiacısı.
+
+Bu roller başlangıç koşullarını ve bazı özel olayları etkileyebilir.
+
+Ancak oyuncuya her şeyin başında onlarca soru sorma. İsim ve temel başlangıç seçimi yeterli olsun. İleri düzey kişiselleştirmeler isteğe bağlı sunulsun.
+
+Oyuncu ana hikâyenin farklı dönemlerinden başlayabilme imkânına da sahip olsun. Başlangıç dönemleri seçilebilir ve her dönemin kendine ait olay havuzu bulunabilir.
+
+# 6. KARAKTERLER VE İLİŞKİ SİSTEMİ
+
+Oyunun en önemli özelliklerinden biri karakter ilişkileri olacak.
+
+Game of Thrones'un önemli karakterleri oyunda yer almalı.
+
+Örnek karakterler:
+- Jon Snow
+- Daenerys Targaryen
+- Tyrion Lannister
+- Cersei Lannister
+- Jaime Lannister
+- Tywin Lannister
+- Ned Stark
+- Robb Stark
+- Arya Stark
+- Sansa Stark
+- Bran Stark
+- Catelyn Stark
+- Theon Greyjoy
+- Yara Greyjoy
+- Euron Greyjoy
+- Stannis Baratheon
+- Renly Baratheon
+- Robert Baratheon
+- Joffrey Baratheon
+- Margaery Tyrell
+- Olenna Tyrell
+- Petyr Baelish
+- Varys
+- Sandor Clegane
+- Gregor Clegane
+- Brienne of Tarth
+- Samwell Tarly
+- Davos Seaworth
+- Melisandre
+- Jorah Mormont
+- Missandei
+- Grey Worm
+- Tormund Giantsbane
+- Bronn
+- Ramsay Bolton
+- Roose Bolton
+- Oberyn Martell
+- Ellaria Sand
+- Khal Drogo
+- Viserys Targaryen
+- Ygritte
+- Gendry
+- Hodor
+- Beric Dondarrion
+- Thoros of Myr
+- High Sparrow
+- Qyburn
+- Gilly
+- Daario Naharis
+- Lyanna Mormont
+- Night King
+
+Bu listeyle sınırlı kalma. Evrenin önemli yan karakterlerini ve bölgesel karakterlerini de ekle.
+
+### İlişki seviyeleri
+
+Her karakterle oyuncunun ayrı bir ilişki puanı bulunmalı.
+
+İlişki puanı -100 ile +100 arasında olsun.
+
+Önerilen seviyeler:
+
+| Puan | İlişki durumu |
+|---|---|
+| -100 / -81 | Ölümcül düşman |
+| -80 / -51 | Düşman |
+| -50 / -21 | Güvensizlik |
+| -20 / +20 | Nötr |
+| +21 / +50 | Olumlu |
+| +51 / +80 | Dost |
+| +81 / +100 | Çok yakın / sadık |
+
+Romantik ilişkiler için ayrıca özel bir ilişki durumu bulunmalı. Her olumlu ilişki romantik ilişkiye dönüşmemeli.
+
+Romantik ilişki:
+- Karakterin kişiliğine.
+- Oyuncunun ve karakterin hikâyedeki konumuna.
+- Karşılıklı etkileşimlere.
+- Güvene.
+- Karakterin tercihlerine.
+- Hikâye koşullarına.
+
+bağlı olarak gelişmeli.
+
+Karakterlerin cinsiyeti, yönelimi, kişiliği ve hikâyesiyle çelişen romantik seçenekler sunma. Romantik ilişkiler karşılıklı rıza ve hikâye tutarlılığı temelinde ilerlemeli.
+
+### İlişki sisteminin gerçek etkileri
+
+İlişki puanı yalnızca bir sayı olarak kalmamalı.
+
+Örneğin:
+- Tyrion ile ilişkin iyiyse sana siyasi tavsiyeler verebilir.
+- Cersei sana güvenmiyorsa seni ortadan kaldırmak için plan yapabilir.
+- Daenerys sana güveniyorsa özel askerî veya diplomatik fırsatlar sunabilir.
+- Jon Snow ile dostsan Kuzey'in güvenini kazanabilirsin.
+- Arya senden nefret ediyorsa seninle konuşmayı reddedebilir veya tehlikeli bir olay başlatabilir.
+- Petyr Baelish sana dostça davranırken aslında kendi çıkarları için seni kullanabilir.
+- Varys sana bilgi sağlayabilir fakat siyasi kararların konusunda seni sınayabilir.
+- Bir karakter sana âşık olmuşsa özel olaylar, konuşmalar ve teklifler açılabilir.
+
+İlişkiler zaman içinde de değişebilmeli. Oyuncunun karakteri uzun süre ihmal etmesi, sözünü tutmaması veya karakterin çıkarlarına zarar vermesi ilişkiyi düşürebilmeli.
+
+Her karakterin kendi:
+- Kişiliği.
+- Motivasyonu.
+- Korkuları.
+- İdealleri.
+- Çıkarları.
+- Sadakatleri.
+- Düşmanları.
+- Dostları.
+- Siyasi hedefleri.
+- Oyuncuya karşı davranış modeli.
+
+olmalı.
+
+Karakterler yalnızca oyuncu karar verdiğinde tepki veren cansız nesneler olmamalı. Bazıları kendi planlarını yapabilmeli, birbirleriyle anlaşabilmeli, çatışabilmeli ve oyuncunun müdahalesi olmadan da hikâyeyi ilerletebilmeli.
+
+### Karakter ilişkileri ekranı
+
+Ayrı bir karakterler bölümü oluştur.
+
+Burada:
+- Karakter portresi.
+- Karakterin adı.
+- Hanedanı.
+- Unvanı.
+- Bulunduğu bölge.
+- Hayatta / ölü / kayıp / esir durumu.
+- Oyuncuyla ilişki seviyesi.
+- İlişki puanı.
+- Son etkileşim.
+- Karakter hakkında bilinen bilgiler.
+
+görüntülenmeli.
+
+Karaktere tıklandığında daha ayrıntılı bir profil açılmalı.
+
+Karakterin oyuncuya nasıl hitap ettiği ilişki durumuna göre değişmeli. Nötr bir karakter resmî davranabilirken yakın bir dost daha samimi konuşabilmeli. Düşman karakterler tehdit, küçümseme veya siyasi manipülasyon içeren ifadeler kullanabilmeli.
+
+# 7. KARAKTER PORTRELERİ VE GÖRSEL TASARIM
+
+Her önemli karakter için onu temsil eden özgün bir çizimli portre oluştur.
+
+Bu portreler:
+- Basit ama kaliteli çizimli karakter illüstrasyonları olmalı.
+- Karakterin saç, sakal, kıyafet, renk paleti ve genel görünümünden esinlenmeli.
+- Karakterin kişiliğini yansıtmalı.
+- Birbirinden ayırt edilebilir olmalı.
+- Oyunun karanlık orta çağ atmosferine uymalı.
+
+Gerçek oyuncuların fotoğraflarını kullanma veya doğrudan kopyalama. Özgün, stilize, çizim tabanlı portreler üret.
+
+Özellikle ana karakterler için birbirine benzeyen genel avatarlar kullanma. Her karakterin kendine özgü bir görsel kimliği olsun.
+
+Teknik açıdan mümkünse portreleri SVG, Canvas veya optimize edilmiş yerel görsel dosyaları şeklinde oluştur. Aynı karakterin farklı ruh hâlleri için alternatif ifadeleri de bulunabilsin:
+- Normal.
+- Mutlu.
+- Öfkeli.
+- Şüpheli.
+- Üzgün.
+- Korkmuş.
+- Tehditkâr.
+
+Portrelerin kartlarda, karakter profilinde ve diyalog ekranlarında tutarlı görünmesini sağla.
+
+# 8. DİNAMİK OLAY VE SENARYO MOTORU
+
+Oyunun asıl zekâsı burada bulunmalı.
+
+Kartlar tamamen rastgele seçilmemeli.
+
+Bir kartın ortaya çıkması için aşağıdaki koşulları değerlendir:
+
+- Oyuncunun bulunduğu hikâye dönemi.
+- Oyuncunun rolü.
+- Oyuncunun mevcut bölgesi.
+- Göstergelerin durumu.
+- Karakterlerin hayatta olup olmadığı.
+- Karakterlerle ilişkiler.
+- Daha önce verilen kararlar.
+- Önceki olayların sonuçları.
+- Mevcut savaşlar.
+- Siyasi ittifaklar.
+- Oyuncunun geçmişte yaptığı hatalar.
+- Açılmış ve kapanmış hikâye dalları.
+- Olayın gerçekleşmesi için gereken koşullar.
+
+Örneğin:
+Oyuncu Robb Stark'ın ölümünü engellediyse Kızıl Düğün'ün orijinal sonucu aynen tekrar gösterilmemeli. Bunun yerine yeni güç dengeleri üzerinden alternatif olaylar oluşturulmalı.
+
+Oyuncu Cersei ile düşmansa Cersei'nin dostane davrandığı sıradan bir kart gösterilmemeli. Bunun yerine tehdit, manipülasyon veya çatışma içeren olaylar sunulmalı.
+
+Oyuncu Daenerys ile çok yakınsa onunla ilgili özel konuşmalar, teklifler ve ortak planlar açılmalı.
+
+### Kart tekrarını engelleme sistemi
+
+Bu sistem çok önemli.
+
+Bir oyun oturumu boyunca aynı kartın tekrar tekrar karşıma çıkmasını istemiyorum.
+
+Kurallar:
+1. Her kartın benzersiz ID'si bulunmalı.
+2. Son kullanılan kartların geçmişi kaydedilmeli.
+3. Aynı oturumda mümkün olduğunca aynı kart tekrar sunulmamalı.
+4. Mümkünse aynı temel olayın farklı varyasyonları da arka arkaya gelmemeli.
+5. Bir kart tekrar gösterilecekse yeterli süre geçmeli ve olayın yeniden ortaya çıkması hikâye bakımından mantıklı olmalı.
+6. Bir karakterle ilgili olaylar arka arkaya yığılmamalı.
+7. Farklı kategoriler arasında dengeli dağılım sağlanmalı.
+8. Hikâye açısından önemli olaylar rastgele bir olay uğruna atlanmamalı.
+9. 6.000 karar boyunca içerik çeşitliliği korunmalı.
+
+60.000 kartlık havuzun tamamı kullanıma hazır olduğunda, 6.000 kartlık bir oyun sırasında aynı kartın tekrar etmesine normal şartlarda gerek kalmamalı.
+
+Ancak bütün kartlar her zaman kullanılabilir olmamalı. Ön koşulları karşılanmayan kartlar seçilmemeli.
+
+Kart seçiminde rastgelelik ile hikâye tutarlılığı arasında denge kur.
+
+### Nadir olaylar
+
+Bazı olaylar çok nadir gerçekleşmeli.
+
+Örneğin:
+- Gizli bir ihanetin ortaya çıkması.
+- Bir karakterin beklenmedik bir şekilde hayatını kurtarması.
+- Gizli bir evlilik teklifi.
+- Bir hanedanın gizli ittifak önermesi.
+- Suikast girişimi.
+- Ejderha ile ilgili sıra dışı bir olay.
+- Bir karakterin geçmişindeki büyük bir sırrı açıklaması.
+- Oyuncuya yönelik gizli bir komplo.
+- Daha önce kaybedildiği düşünülen bir karakterin ortaya çıkması.
+
+Bu olayların çıkma ihtimali mevcut hikâyeye ve koşullara bağlı olsun.
+
+# 9. KARARLARIN DERİN SONUÇLARI
+
+Her kartta iki temel karar seçeneği bulunacak.
+
+Ancak seçeneklerin etkileri yalnızca o anlık göstergelerle sınırlı olmayacak.
+
+Her karar için bir sonuç sistemi oluştur.
+
+Örneğin:
+
+Olay:
+Tyrion Lannister gizlice yanına gelir. Cersei'nin senin hakkında bir plan hazırladığını söyler ve kendisine güvenmeni ister.
+
+Seçenek A:
+Tyrion'a güven ve onunla ittifak kur.
+
+Anlık sonuç:
+- Soyluların desteği +5.
+- Hazine -2.
+- Tyrion ilişkisi +12.
+- Cersei ilişkisi -8.
+
+Gelecekteki sonuç:
+- Tyrion'ın siyasi danışmanlık olayları açılır.
+- Cersei'nin sana karşı daha şüpheci davranma ihtimali artar.
+- Bir sonraki büyük siyasi krizde Tyrion özel bir çözüm önerebilir.
+
+Seçenek B:
+Tyrion'ı reddet ve Cersei'ye haber ver.
+
+Anlık sonuç:
+- Cersei ilişkisi +8.
+- Tyrion ilişkisi -15.
+- Soyluların desteği +2.
+
+Gelecekteki sonuç:
+- Tyrion ileride sana karşı tavır alabilir.
+- Cersei seni kendi çıkarları için kullanmaya çalışabilir.
+- Başka bir karakter bu ihanetini öğrenirse ilişkiler değişebilir.
+
+Bu örnek yalnızca sistemin nasıl işlemesi gerektiğini açıklıyor. Bütün kartları aynı şekilde yazma.
+
+Bazı kararlar hemen olumlu görünürken uzun vadede felaketle sonuçlanabilmeli.
+
+Bazı kararlar başlangıçta kötü görünse de ileride hayat kurtarabilmeli.
+
+Oyuncuya her zaman doğru seçeneği açıkça belli etme. Oyuncu bazen eksik bilgiyle, söylentilerle veya yanlış yönlendirmelerle karar vermek zorunda kalmalı.
+
+# 10. ÖZEL OLAYLAR, SAVAŞLAR VE KRİZLER
+
+Normal kartların yanında özel olay sistemleri bulunmalı.
+
+Örnekler:
+
+### Savaş sistemi
+- Orduların büyüklüğü.
+- Komutanların yetenekleri.
+- Askerî kaynaklar.
+- Arazi avantajı.
+- İttifaklar.
+- Hava ve çevre koşulları.
+- Ejderhaların varlığı.
+- İstihbarat.
+
+gibi unsurlar savaş sonuçlarını etkileyebilmeli.
+
+Savaşlar sadece tek bir kartla çözümlenmemeli. Bazıları birden fazla karardan oluşan küçük hikâye dizilerine dönüşmeli.
+
+### Kuşatma sistemi
+Bir kale kuşatıldığında:
+- Erzak durumu.
+- Savunma gücü.
+- Halkın morali.
+- Yardım kuvvetlerinin gelip gelmeyeceği.
+- Komutanların sadakati.
+
+gibi unsurlar takip edilmeli.
+
+### İhanet ve suikast sistemi
+Karakterler geçmişteki kararlarına ve ilişkilerine göre komplo kurabilmeli.
+
+Oyuncu bazı ihanetleri önceden öğrenebilmeli, bazılarını ise çok geç fark etmeli.
+
+### Diplomasi sistemi
+- Evlilik ittifakları.
+- Askerî anlaşmalar.
+- Ticaret anlaşmaları.
+- Rehine ve esir değişimleri.
+- Barış görüşmeleri.
+- Gizli anlaşmalar.
+
+bulunmalı.
+
+### Ejderha sistemi
+Ejderhalar sıradan askerî birimler gibi değerlendirilmemeli.
+
+Ejderhanın sahibi, karakterin durumu, ejderhanın sadakati ve hikâyedeki olaylar dikkate alınmalı.
+
+### Özel hikâye zincirleri
+Bazı kartlar birbirini takip eden 3–15 kartlık özel hikâye dizileri oluşturabilmeli.
+
+Örneğin:
+- Bir suikast girişimi.
+- Suikastın arkasındaki kişinin araştırılması.
+- Şüphelilerin sorgulanması.
+- Gerçek failin bulunması.
+- İnfaz, affetme veya siyasi anlaşma.
+- Bu kararın gelecekteki sonuçları.
+
+Bu zincirler her zaman aynı şekilde bitmemeli.
+
+# 11. OYUN SONLARI VE KAZANMA SİSTEMİ
+
+Oyuncu bir göstergeyi sıfırladığında oyun sona erecek.
+
+Ancak oyun sonları çeşitli ve hikâyeye özgü olmalı.
+
+En azından:
+- Halk isyanı.
+- Saray darbesi.
+- İhanet sonucu suikast.
+- Savaşta yenilgi.
+- Esaret.
+- Sürgün.
+- Hanedanın çöküşü.
+- Ekonomik çöküş.
+- Dinî ayaklanma.
+- Ejderha saldırısı.
+- Ak Gezenlerin istilası.
+- İç savaş.
+- Tahtın kaybedilmesi.
+
+gibi farklı kaybetme sonuçları bulunmalı.
+
+Her kaybetme ekranında:
+- Özgün bir başlık.
+- Hikâye anlatımı.
+- Oyuncunun son durumunun özeti.
+- Ölümün veya yenilginin nedeni.
+- İlgili karakterlerin son durumları.
+- Oyuncunun aldığı önemli kararların özeti.
+- Toplam karar sayısı.
+- Oyun süresi.
+
+gösterilmeli.
+
+Mümkün olduğunca farklı olay kombinasyonlarından yüzlerce farklı oyun sonu üret.
+
+### Kazanma sonları
+
+Oyuncu ilgili modun karar sayısına ulaştığında kazanmalı.
+
+Ancak 300, 600, 1.200 veya 6.000 kararın sonunda sadece "Tebrikler, kazandınız" yazma.
+
+Göstergelerin durumuna, karakter ilişkilerine, hanedanların durumuna ve geçmiş kararlarına göre farklı zafer hikâyeleri oluştur.
+
+Örnekler:
+- Halkın sevgisini kazanarak hükümdar olmak.
+- Güçlü bir askerî imparatorluk kurmak.
+- Büyük hanedanları birleştirmek.
+- Barış ve diplomasiyle Westeros'u yönetmek.
+- Ejderhalarla yeni bir hanedan kurmak.
+- Halkın desteğini alarak monarşiyi değiştirmek.
+- Rakiplerini ortadan kaldırarak mutlak iktidar kurmak.
+- Kuzey'in bağımsızlığını korumak.
+- Büyük savaşları engelleyerek kalıcı barış sağlamak.
+
+Bu sonlar sabit bir listeden rastgele seçilmemeli. Oyuncunun geçmişi ve başarılarıyla uyumlu olmalı.
+
+Mümkün olduğunca yüzlerce farklı kazanma varyasyonu oluştur.
+
+# 12. OYUN ANA MENÜSÜ VE KAYIT YÖNETİMİ
+
+Oyuncu oyunu açtığında doğrudan kart ekranına girmemeli.
+
+Önce atmosferik bir ana menü karşılamalı.
+
+Ana menüde:
+- Yeni Oyun.
+- Kayıtlı Oyunlarım.
+- Karakterler.
+- Oyun İstatistikleri.
+- Ayarlar.
+- Oyun Hakkında.
+
+bölümleri bulunmalı.
+
+### Yeni oyun
+
+Yeni oyun başlatıldığında:
+1. Oyuncudan adı istenmeli.
+2. Oyun modu seçilmeli.
+3. İsteğe bağlı başlangıç rolü ve dönem seçilebilmeli.
+4. Başlangıç hikâyesi gösterilmeli.
+5. İlk kart sunulmalı.
+
+### Kayıtlı oyunlarım
+
+Her oyun ayrı bir kayıt olarak tutulmalı.
+
+Kayıt kartında şunlar gösterilmeli:
+- Oyuncunun adı.
+- Oyun modu.
+- Kaçıncı kararda olduğu.
+- Hedef karar sayısı.
+- İlerleme yüzdesi.
+- Toplam oynama süresi.
+- Son oynama tarihi.
+- Mevcut göstergelerin özeti.
+- Öne çıkan karakter ilişkileri.
+- Oyunun mevcut durumu.
+
+Örneğin:
+
+Ahmet – Uzun Mod
+Karar: 847 / 1.200
+İlerleme: %70,58
+Oynama süresi: 3 gün 5 saat 24 dakika
+Son oynama: 10 Kasım 2026
+
+Bu örnekteki değerleri gerçek oyun verilerinden hesapla.
+
+Her kayıt için:
+- Devam Et.
+- Ayrıntıları Gör.
+- Yeniden Adlandır.
+- Sil.
+
+işlemleri bulunmalı.
+
+Silme işleminde onay istenmeli.
+
+Birden fazla kayıt oluşturulabilmeli. Oyuncunun birden fazla farklı hikâyesi aynı anda devam edebilmeli.
+
+### Anlık kayıt sistemi
+
+Bu özellik kesinlikle kusursuz çalışmalı.
+
+Her karar verildikten sonra kayıt otomatik olarak güncellenmeli.
+
+Oyuncu:
+- Tarayıcıyı kapatırsa.
+- Sayfayı yenilerse.
+- Bilgisayarı kapatırsa.
+- Oyundan çıkarsa.
+- Daha sonra geri gelirse.
+
+son kararından devam edebilmeli.
+
+Kayıt yalnızca kart sayacını değil, oyunun bütün durumunu korumalı:
+- Gösterge değerleri.
+- İlişki puanları.
+- Karakterlerin yaşam durumları.
+- Geçmiş kartlar.
+- Geçmiş kararlar.
+- Açık hikâye zincirleri.
+- Hikâye bayrakları.
+- Aktif ittifaklar.
+- Savaş durumları.
+- Oyun süresi.
+- Mevcut kart ve seçim durumu.
+- Oyun modu.
+- Oyuncunun adı.
+
+Bir karar uygulanırken yarım kayıt veya veri bozulması yaşanmaması için güvenli kayıt mekanizması kullan.
+
+Öncelik IndexedDB olsun. Gerekli küçük ayarlar için localStorage kullanılabilir.
+
+Veriler kullanıcının kendi cihazında/tarayıcısında saklansın. Haricî sunucuya veya üçüncü taraf servislere gönderilmesin.
+
+Ayrıca:
+- Kayıtları JSON olarak dışa aktarabilme.
+- Daha önce dışa aktarılmış kayıtları içe aktarabilme.
+- Birden fazla kayıt arasında geçiş yapabilme.
+- Kayıtların sürüm kontrolünü yapabilme.
+
+özelliklerini ekle.
+
+# 13. OYUN İSTATİSTİKLERİ VE ZAMAN TAKİBİ
+
+Oyuncunun ilerlemesini ayrıntılı gösteren bir istatistik ekranı oluştur.
+
+Gösterilecek bilgiler:
+
+- Toplam oynanan oyun.
+- Tamamlanan oyun.
+- Kaybedilen oyun.
+- Kazanılan oyun.
+- Toplam karar sayısı.
+- En uzun hayatta kalma serisi.
+- En uzun oyun süresi.
+- En çok kullanılan karar türü.
+- En fazla ilişki kurulan karakter.
+- En fazla düşman olunan karakter.
+- En yüksek ulaşılan halk desteği.
+- En yüksek ulaşılan askerî güç.
+- En yüksek ulaşılan hazine.
+- En yüksek ulaşılan soylu desteği.
+- En sık karşılaşılan olay kategorileri.
+- En başarılı oyun modu.
+
+### Oynama süresi
+
+Oynama süresini gerçek zamanlı takip et.
+
+Oyuncu sekmeyi kapattığında veya oyundan çıktığında süreyi doğru hesapla.
+
+Tarayıcı arka plandayken veya oyun açık ama kullanılmıyorken geçen süreyi aktif oynama süresine ekleme.
+
+Gün, saat ve dakika biçiminde göster.
+
+Örneğin:
+3 gün 5 saat 24 dakika.
+
+# 14. OYUNCU ADI VE KİŞİSELLEŞTİRME
+
+Oyuncunun adı başlangıçta sorulmalı.
+
+Bu isim:
+- Karakterlerin hitaplarında.
+- Hikâye metinlerinde.
+- Diyaloglarda.
+- Özel olaylarda.
+- Kazanma ve kaybetme hikâyelerinde.
+
+doğal biçimde kullanılmalı.
+
+Örneğin:
+"Lord Ahmet, Kuzey'den gelen haberler hiç iç açıcı değil."
+
+Oyuncu adını daha sonra değiştirebilmeli.
+
+İsim değiştirildiğinde:
+- Mevcut kayıtlar korunmalı.
+- Geçmiş kararlar değişmemeli.
+- Eski isim gelecekteki hitaplarda kullanılmamalı.
+- Kayıtlar arasında isim tutarsızlığı oluşmamalı.
+
+Oyuncuya ait isim alanı güvenli biçimde işlenmeli. HTML veya script kodlarının kullanıcı adı üzerinden çalışmasına izin verme.
+
+# 15. GÖRSEL TASARIM VE ARAYÜZ
+
+Oyunun görsel tasarımına ciddi önem ver.
+
+Basit, boş ve sıradan bir web sitesi görünümü istemiyorum.
+
+Game of Thrones atmosferini çağrıştıran:
+- Orta Çağ estetiği.
+- Karanlık ve dramatik renk paleti.
+- Eski parşömen dokuları.
+- Taş ve ahşap yüzeyler.
+- Hanedan sembolleri.
+- İnce altın detaylar.
+- Gotik yazı karakterleri.
+- Karanlık saray atmosferi.
+- Zarif animasyonlar.
+
+kullan.
+
+Ancak okunabilirliği feda etme.
+
+### Ana renk paleti
+
+- Koyu siyah.
+- Kömür grisi.
+- Bordo.
+- Koyu kırmızı.
+- Eskitilmiş altın.
+- Parşömen kremi.
+
+### Kart tasarımı
+
+Kart ekranı oyunun merkezinde olmalı.
+
+Kart:
+- Ekranın ortasında bulunmalı.
+- Hafif gölgeli ve çerçeveli olmalı.
+- Karakter portresi üst bölümde veya kartın uygun bir alanında yer almalı.
+- Hikâye metni kolay okunmalı.
+- İki karar seçeneği belirgin olmalı.
+- Kaydırma animasyonları akıcı olmalı.
+- Seçenek seçildiğinde kartın hareketi ve sonucu görsel olarak hissedilmeli.
+
+Kart ekranında dört gösterge sürekli görünür olmalı.
+
+Ayrıca:
+- Karar sayacı.
+- Hedef karar sayısı.
+- Oyun modu.
+- İlerleme yüzdesi.
+- Karakter ilişkilerine kısa erişim.
+- Menüye dönüş.
+
+bulunmalı.
+
+### Duygusal atmosfer
+
+Bazı olaylarda arka plan değişebilmeli.
+
+Örneğin:
+- King's Landing için saray ve şehir atmosferi.
+- Winterfell için karlı Kuzey atmosferi.
+- Dragonstone için karanlık ve volkanik atmosfer.
+- The Wall için buzlu ve soğuk atmosfer.
+- Essos için farklı kültürel mimari ve renkler.
+
+Her kartta ayrı devasa arka plan görseli kullanmak zorunda değilsin. Performansı koruyacak şekilde optimize et.
+
+### Mobil uyumluluk
+
+Oyun hem masaüstü hem mobil tarayıcıda sorunsuz çalışmalı.
+
+- Responsive tasarım.
+- Dokunmatik kaydırma.
+- Küçük ekranlarda okunabilir metinler.
+- Taşmayan kartlar.
+- Uygun buton boyutları.
+- Hızlı yükleme.
+
+zorunlu.
+
+# 16. EKSTRA OYUN ÖZELLİKLERİ
+
+Aşağıdaki özellikleri de oyuna ekle.
+
+### A. Günlük olaylar
+
+Bazı günlerde veya belirli karar aralıklarında özel olaylar tetiklenebilsin.
+
+Bunlar rastgele ama hikâye koşullarına uygun olsun.
+
+### B. Gizli başarımlar
+
+Örneğin:
+- 100 karar boyunca hiçbir göstergeyi 20'nin altına düşürme.
+- Bir ana karakterle maksimum dostluk kurma.
+- Bir hanedanın çöküşünü engelleme.
+- Hiç savaş kaybetmeden 600 karara ulaşma.
+- Bütün göstergeleri aynı anda 90'ın üzerine çıkarma.
+- Bir oyunda 10 farklı karakterle olumlu ilişki kurma.
+- Rekabetçi Mod'u tamamlama.
+
+Başarımlar ayrı bir ekranda gösterilsin.
+
+### C. Önemli kararlar arşivi
+
+Oyuncunun geçmişte verdiği önemli kararları ve sonuçlarını görebileceği bir arşiv oluştur.
+
+### D. Hikâye günlüğü
+
+Oyuncunun yaşadığı önemli olayları kronolojik sırayla kaydet.
+
+Böylece 1.000 karar sonra bile hikâyenin nasıl geliştiğini takip edebilsin.
+
+### E. Karakterlerin kendi aralarındaki ilişkileri
+
+Karakterlerin yalnızca oyuncuyla ilişkileri bulunmasın.
+
+Önemli karakterler arasında da:
+- Dostluk.
+- Düşmanlık.
+- Aile bağı.
+- Siyasi ittifak.
+- Rekabet.
+- Romantik bağ.
+- İhanet.
+
+gibi ilişkiler bulunmalı.
+
+Oyuncunun bir karakterle yakınlaşması başka bir karakteri rahatsız edebilmeli.
+
+### F. Sırlar ve istihbarat
+
+Bazı karakterler gerçek düşüncelerini saklayabilmeli.
+
+Oyuncu casuslar, danışmanlar ve diplomatik kaynaklar üzerinden bilgi toplayabilmeli.
+
+Ancak her duyulan bilgi doğru olmamalı.
+
+### G. Ses ve müzik
+
+Ayarlar bölümünde:
+- Müzik açma/kapatma.
+- Ses efektlerini açma/kapatma.
+- Ses seviyesini ayarlama.
+
+seçenekleri bulunmalı.
+
+Telifli Game of Thrones müziklerini veya ses kayıtlarını kopyalama. Özgün, telifsiz veya uygun lisanslı atmosferik sesler kullan. Sesler yüklenmezse oyun çalışmaya devam etmeli.
+
+# 17. ZORLUK VE DENGE
+
+Oyunun kolay veya imkânsız olmasını istemiyorum.
+
+Hızlı Mod yeni başlayanlar için erişilebilir olmalı.
+
+Normal Mod dengeli olmalı.
+
+Uzun Mod oyuncunun stratejik düşünmesini gerektirmeli.
+
+Rekabetçi Mod ise gerçekten zorlayıcı olmalı.
+
+Ancak zorluk, rastgele ve adaletsiz gösterge düşüşleriyle oluşturulmamalı.
+
+Her olumsuz sonucun mantıklı bir nedeni bulunmalı.
+
+Oyuncunun:
+- Her zaman aynı seçeneği seçerek kazanması.
+- Göstergeleri sürekli maksimumda tutması.
+- İlişkileri hiçbir bedel ödemeden geliştirmesi.
+- Her soruna aynı çözümü uygulaması.
+
+mümkün olmamalı.
+
+Kararların maliyetleri ve fırsatları olmalı.
+
+Oyuncunun bazen iki kötü seçenek arasında karar vermesi gerekebilmeli.
+
+Ayrıca çok iyi yönetilen bir oyun bile beklenmedik olaylar içerebilmeli. Fakat bu olaylar oyuncunun önceki başarılarını anlamsız hâle getirecek kadar adaletsiz olmamalı.
+
+# 18. TEKNİK MİMARİ VE YAZILIM KALİTESİ
+
+Projeyi mevcut çalışma ortamına uygun şekilde geliştir.
+
+Tarayıcıda çalışan web tabanlı bir oyun istiyorum.
+
+Teknoloji seçimini mevcut proje yapısına göre yap. Gereksiz yere karmaşık teknolojiler kullanma.
+
+Öncelik:
+- HTML5.
+- CSS3.
+- JavaScript.
+- Gerekiyorsa TypeScript.
+- IndexedDB.
+- JSON içerik paketleri.
+
+olabilir.
+
+React veya başka bir framework kullanman gerekiyorsa gerçek bir fayda sağlamalı. Sırf modern görünmek için gereksiz bağımlılıklar ekleme.
+
+### Mimari ayrımı
+
+Aşağıdaki sistemleri birbirinden ayrıştır:
+
+1. Oyun arayüzü.
+2. Kart ve senaryo motoru.
+3. Gösterge yönetimi.
+4. Karakter ve ilişki sistemi.
+5. Hikâye ve olay zinciri motoru.
+6. Oyun modu yönetimi.
+7. Kayıt ve veri yönetimi.
+8. İstatistik ve zaman takip sistemi.
+9. İçerik paketleri.
+10. Başarım sistemi.
+
+Bütün kodu tek bir devasa dosyada yazma.
+
+Kod okunabilir, geliştirilebilir ve sürdürülebilir olmalı.
+
+### Veri bütünlüğü
+
+Her kart için şema doğrulaması yap.
+
+Hatalı:
+- Gösterge değerleri.
+- Eksik seçenekler.
+- Geçersiz karakter ID'leri.
+- Var olmayan hikâye koşulları.
+- Yinelenen kart ID'leri.
+- Çelişkili olay bağlantıları.
+
+tespit edilmeli.
+
+### Performans
+
+60.000 kartın tamamını aynı anda DOM'a yükleme.
+
+İçerikleri gerektiğinde yükle.
+
+- Lazy loading.
+- İçerik indeksleme.
+- Etkili kart seçimi.
+- Optimize edilmiş veri erişimi.
+- Bellek yönetimi.
+- Gereksiz render işlemlerini önleme.
+
+kullan.
+
+6.000 karar süren bir oyunda performans düşmemeli.
+
+### Güvenlik
+
+Oyun mümkün olduğunca yerel çalışan bir uygulama olmalı.
+
+Oyuncunun verileri haricî sunucuya gönderilmemeli.
+
+Kullanıcı girdileri güvenli biçimde işlenmeli.
+
+Dışarıdan gelen HTML veya JavaScript çalıştırılmamalı.
+
+JSON içe aktarma işlemlerinde dosya boyutu, veri yapısı ve içerik doğrulaması yapılmalı.
+
+### Veri yedekleme
+
+Kayıtların bozulması veya tarayıcı verilerinin temizlenmesi durumunda oyuncunun kaybetmemesi için dışa aktarma ve içe aktarma sistemini güvenilir şekilde oluştur.
+
+# 19. TEST VE KALİTE KONTROLÜ
+
+Projeyi tamamladığını söylemeden önce aşağıdaki testleri gerçekleştir.
+
+### Oyun mekaniği
+- Kart sola kaydırılabiliyor mu?
+- Kart sağa kaydırılabiliyor mu?
+- Butonlar doğru seçenekleri uyguluyor mu?
+- Göstergeler doğru hesaplanıyor mu?
+- Sıfıra düşen gösterge oyunu bitiriyor mu?
+- Karar sayacı doğru ilerliyor mu?
+
+### Oyun modları
+- 300 karar sonunda Hızlı Mod tamamlanıyor mu?
+- 600 karar sonunda Normal Mod tamamlanıyor mu?
+- 1.200 karar sonunda Uzun Mod tamamlanıyor mu?
+- 6.000 karar sonunda Rekabetçi Mod tamamlanıyor mu?
+- Mod yükseltme sistemi geçmiş ilerlemeyi koruyor mu?
+
+### Kayıt sistemi
+- Her karardan sonra kayıt oluşuyor mu?
+- Sayfa yenilendiğinde oyun devam ediyor mu?
+- Tarayıcı kapatılıp açıldığında kayıt yükleniyor mu?
+- Birden fazla oyun kaydı birbirinden bağımsız mı?
+- Kayıt silme doğru çalışıyor mu?
+- JSON dışa aktarma ve içe aktarma çalışıyor mu?
+
+### Karakter sistemi
+- İlişkiler doğru değişiyor mu?
+- Ölen karakterler yeniden ortaya çıkıyor mu?
+- İlişki seviyeleri davranışları etkiliyor mu?
+- Romantik ilişki koşulları doğru çalışıyor mu?
+- Karakterlerin geçmiş kararlarla tutarlı davranması sağlanıyor mu?
+
+### Senaryo sistemi
+- Kartlar tekrar ediyor mu?
+- Aynı olayın gereksiz varyasyonları arka arkaya geliyor mu?
+- Geçmiş kararlar gelecekteki olayları etkiliyor mu?
+- Karakterlerin ölüm ve yaşam durumları korunuyor mu?
+- Hikâye zincirleri doğru ilerliyor mu?
+- Olmaması gereken olaylar yanlış zamanlarda tetikleniyor mu?
+
+### Performans
+- 6.000 karar simülasyonu yap.
+- Kart seçme motorunu yoğun yük altında test et.
+- Kayıt sistemini çok sayıda karar altında test et.
+- Büyük içerik paketlerinin yüklenmesini test et.
+- Mobil ve masaüstü ekranlarında kontrol et.
+
+Testleri yalnızca görsel olarak değil, gerçek oyun verileri üzerinde gerçekleştir.
+
+Özellikle oyun sonu, kayıt ve mod yükseltme sistemlerinde hata bırakma.
+
+---
+
+# 20. GELİŞTİRME STRATEJİSİ
+
+Bu projeyi tek seferde yüzeysel biçimde tamamlamaya çalışma.
+
+Önce sağlam bir temel oluştur, sonra bütün sistemleri birbirine bağla.
+
+Aşağıdaki aşamaları uygula:
+
+### Aşama 1 – Oyun iskeleti
+- Ana menü.
+- Yeni oyun ekranı.
+- Oyuncu adı.
+- Dört oyun modu.
+- Kart kaydırma mekaniği.
+- Dört gösterge.
+- Temel oyun sonu.
+
+Bu aşamada çalışan bir oyun ortaya çıkmalı.
+
+### Aşama 2 – Kayıt ve ilerleme
+- IndexedDB.
+- Otomatik kayıt.
+- Kayıtlı oyunlar ekranı.
+- Oyun süresi.
+- Karar sayacı.
+- Mod yükseltme.
+- JSON yedekleme.
+
+### Aşama 3 – Karakter sistemi
+- Karakter veri tabanı.
+- Portreler.
+- İlişki puanları.
+- Karakter profilleri.
+- Dinamik diyaloglar.
+- Karakterlerin birbirleriyle ilişkileri.
+
+### Aşama 4 – Hikâye motoru
+- Canon olayları.
+- Alternatif tarih.
+- Hikâye bayrakları.
+- Olay zincirleri.
+- Savaş ve diplomasi.
+- Dinamik kart seçimi.
+
+### Aşama 5 – Büyük içerik üretimi
+- 60.000 kartlık içerik havuzu.
+- Kategori paketleri.
+- Özgün varyasyonlar.
+- Kart tekrar kontrolü.
+- Senaryo doğrulaması.
+
+### Aşama 6 – Gelişmiş özellikler
+- Başarımlar.
+- İstatistikler.
+- Hikâye günlüğü.
+- Önemli kararlar arşivi.
+- Nadir olaylar.
+- Gelişmiş oyun sonları.
+
+### Aşama 7 – Son testler
+- Hata giderme.
+- Performans.
+- Mobil uyumluluk.
+- Veri güvenliği.
+- Uzun süreli oyun simülasyonu.
+
+Bir aşamayı tamamladığında sonraki aşamaya geç.
+
+Önceki aşamaların çalışan özelliklerini bozma.
+
+---
+
+# 21. SON VE EN ÖNEMLİ TALİMATLAR
+
+Bu projede aşağıdaki hataları kesinlikle yapma:
+
+1. Yalnızca güzel bir ana menü hazırlayıp oyunun içini boş bırakma.
+2. Birkaç düzine kart hazırlayıp 60.000 kart oluşturduğunu söyleme.
+3. Kartları yalnızca isim değiştirerek çoğaltma.
+4. Kararların sonuçlarını sadece anlık gösterge değişimlerine indirgeme.
+5. Karakter ilişkilerini yalnızca görsel bir sayı olarak bırakma.
+6. Her oyunda aynı kartların aynı sırayla gelmesine izin verme.
+7. Canon hikâyesini ve alternatif hikâyeyi birbirine karıştırma.
+8. Ölen karakterleri hikâye tutarsızlığı yaratacak şekilde geri getirme.
+9. Oyuncunun geçmiş kararlarını görmezden gelme.
+10. Kayıt sistemini yalnızca karar sayısını kaydeden basit bir sistem olarak oluşturma.
+11. 6.000 kararlık modda performans sorunlarını görmezden gelme.
+12. Çalışmayan butonlar veya göstermelik özellikler bırakma.
+13. Test etmediğin özelliklerin çalıştığını iddia etme.
+14. Eksik içerik miktarını saklama.
+15. Kullanıcıdan her küçük işlem için tekrar tekrar onay isteme.
+
+### Nihai hedef
+
+Ortaya çıkan oyun, sıradan bir tarayıcı kart oyunu gibi hissettirmemeli.
+
+Oyuncu gerçekten Westeros'ta siyasi güç mücadelesinin içinde olduğunu hissetmeli.
+
+Bir gün Tyrion ile dostluk kurabilmeli, başka bir gün Cersei'nin komplosuna kurban gitmeli. Daenerys ile ittifak yapabilmeli, Jon Snow ile Kuzey'i savunabilmeli, Arya'nın güvenini kazanabilmeli veya Petyr Baelish'in oyunlarına yenilebilmeli.
+
+Oyuncunun her kararı yeni bir hikâyenin kapısını açmalı.
+
+300 kararlık bir oyun bile kendine özgü bir hikâyeye sahip olmalı. 6.000 kararlık bir oyun ise oyuncuya uzun soluklu, değişken ve unutulmaz bir macera sunmalı.
+
+**En önemli tasarım ilkesi: Oyuncu kartları değil, Westeros'un kaderini değiştirdiğini hissetmeli.**
+
+Şimdi mevcut proje dosyalarını incele. Önce çalışma ortamını ve mevcut dosya yapısını anla. Sonra geliştirmeye başla.
+
+Sadece yapılacakları anlatma. Gerçek dosyaları oluştur, kodla, çalıştır, test et ve eksikleri tamamla.
+
+Bir özelliği tamamlamadan sonraki aşamaya geçme. Herhangi bir teknik sınırlama nedeniyle hedeflerden birini gerçekleştiremiyorsan bunu açıkça belirt ve uygulanabilir bir çözüm geliştir.
+
+Ortaya gerçekten oynanabilir, kaliteli ve uzun ömürlü bir oyun çıkar.
