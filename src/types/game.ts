@@ -367,7 +367,8 @@ export interface UndoSnapshot {
 export interface GameRunState {
   saveId: string;
   version: number;
-  playerName: string;
+  campaignName?: string; // Oyuna özel kayıt/sefer ismi
+  playerName: string;    // Hükümdar / hitap ismi
   roleId: PlayerRoleId;
   modeId: GameModeId;
   difficultyId?: DifficultyId;

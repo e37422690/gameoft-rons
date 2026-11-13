@@ -42,23 +42,23 @@ export const EN_DIFFICULTY_MODES: Record<
   easy: {
     id: 'easy',
     name: 'Easy Mode',
-    shortRule: 'Classic Dynamics (1x Drop / Full Gain)',
+    shortRule: 'Max +10 Gain · Max -5 Drop',
     description:
-      'Preserves the classic baseline balance. Both negative and positive choices affect indicators at the standard (1x) rate, ideal for experiencing the story comfortably.',
+      'Ideal for experiencing the story and politics comfortably. Positive outcomes can increase indicators by up to +10 points, while negative outcomes are softened to drop by at most 5 points (-5).',
   },
   normal: {
     id: 'normal',
     name: 'Normal Mode (Default)',
-    shortRule: 'Treasury 2x Drop · Others 3x Drop · Full Gain',
+    shortRule: 'Max +10 Gain · Max -10 Drop',
     description:
-      'Default balanced challenge. On negative outcomes, Treasury drops by 2x while People, Military, and Nobles drop by 3x. Positive outcomes grant their full normal increase.',
+      'Default balanced Westeros challenge. Decisions can increase indicators by at most +10 points and reduce them by at most 10 points (-10).',
   },
   hard: {
     id: 'hard',
     name: 'Hard Mode',
-    shortRule: 'Treasury 2x Drop · Others 3x Drop · Gains Reduced by 1-2 Pts',
+    shortRule: 'Max +7 Gain · Max -10 Drop',
     description:
-      'Unforgiving Westeros realism. On negative outcomes, Treasury drops by 2x and other indicators drop by 3x; positive outcomes grant 1–2 fewer points than normal (e.g., +3 becomes +2, +7 becomes +5).',
+      'Unforgiving Westeros realism. Negative outcomes can drop indicators by up to 10 points (-10), while positive outcomes can increase them by at most +7 points.',
   },
 };
 

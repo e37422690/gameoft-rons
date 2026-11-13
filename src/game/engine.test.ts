@@ -21,49 +21,61 @@ import {
 } from './scenarioPoolEngine';
 import { localizeCard } from '../i18n/localization';
 
-test('3 Difficulty Modes (Easy, Normal default, Hard) scale positive and negative indicator deltas accurately', () => {
-  // Default new game starts in Normal difficulty
+test('3 Difficulty Modes (Easy [-5, +10], Normal [-10, +10], Hard [-10, +7]) and Custom Campaign Name work accurately', () => {
+  // Default new game starts in Normal difficulty and supports custom campaignName
   const defaultState = createInitialGameState({
     playerName: 'Aegon',
+    campaignName: 'Kuzeyin İntikamı',
     modeId: 'normal',
     roleId: 'noble_bannerman',
     eraId: 'robert_reign',
   });
   assert.equal(defaultState.difficultyId, 'normal');
+  assert.equal(defaultState.campaignName, 'Kuzeyin İntikamı');
 
-  // 1. Easy mode ('easy'): baseline 1x on all negative and positive deltas
-  assert.equal(scaleSingleDeltaForDifficulty(-5, 'treasury', 'easy'), -5);
-  assert.equal(scaleSingleDeltaForDifficulty(-5, 'people', 'easy'), -5);
-  assert.equal(scaleSingleDeltaForDifficulty(3, 'military', 'easy'), 3);
-  assert.equal(scaleSingleDeltaForDifficulty(7, 'nobles', 'easy'), 7);
+  // 1. Easy mode ('easy'): Max +10 increase, Max -5 drop (negative deltas halved and capped at -5)
+  assert.equal(scaleSingleDeltaForDifficulty(-10, 'treasury', 'easy'), -5);
+  assert.equal(scaleSingleDeltaForDifficulty(-6, 'people', 'easy'), -3);
+  assert.equal(scaleSingleDeltaForDifficulty(-1, 'military', 'easy'), -1);
+  assert.equal(scaleSingleDeltaForDifficulty(8, 'military', 'easy'), 8);
+  assert.equal(scaleSingleDeltaForDifficulty(14, 'nobles', 'easy'), 10);
 
-  // 2. Normal mode ('normal'): Treasury negative drops 2x, other negative indicators drop 3x; positive gains unchanged
-  assert.equal(scaleSingleDeltaForDifficulty(-5, 'treasury', 'normal'), -10);
-  assert.equal(scaleSingleDeltaForDifficulty(-5, 'people', 'normal'), -15);
-  assert.equal(scaleSingleDeltaForDifficulty(-4, 'military', 'normal'), -12);
-  assert.equal(scaleSingleDeltaForDifficulty(-6, 'nobles', 'normal'), -18);
-  assert.equal(scaleSingleDeltaForDifficulty(3, 'people', 'normal'), 3);
-  assert.equal(scaleSingleDeltaForDifficulty(7, 'treasury', 'normal'), 7);
+  // 2. Normal mode ('normal'): Balanced [-10, +10] (Max +10 increase, Max -10 drop)
+  assert.equal(scaleSingleDeltaForDifficulty(-10, 'treasury', 'normal'), -10);
+  assert.equal(scaleSingleDeltaForDifficulty(-15, 'people', 'normal'), -10);
+  assert.equal(scaleSingleDeltaForDifficulty(-6, 'military', 'normal'), -6);
+  assert.equal(scaleSingleDeltaForDifficulty(7, 'people', 'normal'), 7);
+  assert.equal(scaleSingleDeltaForDifficulty(15, 'treasury', 'normal'), 10);
 
-  // 3. Hard mode ('hard'): Treasury negative drops 2x, other negative indicators drop 3x; positive gains reduced by 1-2 points (+3 -> +2, +7 -> +5)
-  assert.equal(scaleSingleDeltaForDifficulty(-5, 'treasury', 'hard'), -10);
-  assert.equal(scaleSingleDeltaForDifficulty(-5, 'people', 'hard'), -15);
-  assert.equal(scaleSingleDeltaForDifficulty(3, 'people', 'hard'), 2);
+  // 3. Hard mode ('hard'): Max +7 increase, Max -10 drop
+  assert.equal(scaleSingleDeltaForDifficulty(-10, 'treasury', 'hard'), -10);
+  assert.equal(scaleSingleDeltaForDifficulty(-15, 'people', 'hard'), -10);
+  assert.equal(scaleSingleDeltaForDifficulty(10, 'people', 'hard'), 7);
   assert.equal(scaleSingleDeltaForDifficulty(7, 'military', 'hard'), 5);
-  assert.equal(scaleSingleDeltaForDifficulty(1, 'nobles', 'hard'), 0);
+  assert.equal(scaleSingleDeltaForDifficulty(4, 'nobles', 'hard'), 3);
+  assert.equal(scaleSingleDeltaForDifficulty(1, 'nobles', 'hard'), 1);
 
-  // Verify full IndicatorDelta object scaling in Hard mode
+  // Verify full IndicatorDelta object scaling in Easy, Normal, and Hard modes
+  const scaledEasy = scaleIndicatorDeltaForDifficulty(
+    { people: -8, military: 6, treasury: -10, nobles: 10, reason: 'Easy test' },
+    'easy'
+  );
+  assert.equal(scaledEasy.people, -4);
+  assert.equal(scaledEasy.military, 6);
+  assert.equal(scaledEasy.treasury, -5);
+  assert.equal(scaledEasy.nobles, 10);
+
   const scaledHard = scaleIndicatorDeltaForDifficulty(
-    { people: -4, military: 3, treasury: -5, nobles: 7, reason: 'Hard test' },
+    { people: -8, military: 6, treasury: -10, nobles: 10, reason: 'Hard test' },
     'hard'
   );
-  assert.equal(scaledHard.people, -12); // -4 * 3
-  assert.equal(scaledHard.military, 2); // +3 -> +2
-  assert.equal(scaledHard.treasury, -10); // -5 * 2
-  assert.equal(scaledHard.nobles, 5); // +7 -> +5
+  assert.equal(scaledHard.people, -8);
+  assert.equal(scaledHard.military, 4);
+  assert.equal(scaledHard.treasury, -10);
+  assert.equal(scaledHard.nobles, 7);
 });
 
-test('Rebalanced 64k+ card pool has zero hidden positive lens/stance inflation and causes defeat on Nobles, Military, and People', () => {
+test('Rebalanced 64k+ card pool stays strictly within [-10, +10] and allows strategic survival well beyond 8 cards while preserving all 4 defeat paths', () => {
   let negNoblesCount = 0;
   let negMilitaryCount = 0;
   let negPeopleCount = 0;
@@ -72,6 +84,10 @@ test('Rebalanced 64k+ card pool has zero hidden positive lens/stance inflation a
   for (let seedIdx = 0; seedIdx < 42; seedIdx++) {
     const card = materializeContextualCard(seedIdx, seedIdx % 16, seedIdx % 12, 0);
     for (const choice of [card.leftChoice, card.rightChoice]) {
+      for (const k of ['people', 'military', 'treasury', 'nobles'] as const) {
+        const val = choice.indicators[k] || 0;
+        assert.ok(val >= -10 && val <= 10, `Card ${card.id} indicator ${k}=${val} out of [-10, +10]`);
+      }
       if ((choice.indicators.nobles || 0) < 0) negNoblesCount++;
       if ((choice.indicators.military || 0) < 0) negMilitaryCount++;
       if ((choice.indicators.people || 0) < 0) negPeopleCount++;
@@ -79,14 +95,45 @@ test('Rebalanced 64k+ card pool has zero hidden positive lens/stance inflation a
     }
   }
 
-  // Out of 84 options across the 42 seeds, Nobles and Military must be the most fragile/frequent negative drops, followed by People and Treasury
-  assert.ok(negNoblesCount >= 40, `Expected >= 40 options with negative Nobles impact, got ${negNoblesCount}`);
-  assert.ok(negMilitaryCount >= 40, `Expected >= 40 options with negative Military impact, got ${negMilitaryCount}`);
-  assert.ok(negPeopleCount >= 35, `Expected >= 35 options with negative People impact, got ${negPeopleCount}`);
-  assert.ok(negTreasuryCount >= 35, `Expected >= 35 options with negative Treasury impact, got ${negTreasuryCount}`);
+  // Balanced trade-offs across all 4 indicators
+  assert.ok(negNoblesCount >= 25, `Expected >= 25 options with negative Nobles impact, got ${negNoblesCount}`);
+  assert.ok(negMilitaryCount >= 25, `Expected >= 25 options with negative Military impact, got ${negMilitaryCount}`);
+  assert.ok(negPeopleCount >= 25, `Expected >= 25 options with negative People impact, got ${negPeopleCount}`);
+  assert.ok(negTreasuryCount >= 25, `Expected >= 25 options with negative Treasury impact, got ${negTreasuryCount}`);
 
-  // Simulate runs where player consistently picks options that hurt Nobles, Military, or People in Normal mode
-  for (const targetKey of ['nobles', 'military', 'people'] as const) {
+  // 1. Strategic AI player in Normal mode who protects the lowest indicator survives well past 8 cards (e.g., >= 60 cards naturally)
+  let smartState = createInitialGameState({
+    playerName: 'Aegon',
+    modeId: 'normal',
+    difficultyId: 'normal',
+    roleId: 'noble_bannerman',
+    eraId: 'robert_reign',
+  });
+
+  for (let step = 0; step < 80 && smartState.status === 'playing'; step++) {
+    const leftD = scaleIndicatorDeltaForDifficulty(smartState.currentCard.leftChoice.indicators, 'normal');
+    const rightD = scaleIndicatorDeltaForDifficulty(smartState.currentCard.rightChoice.indicators, 'normal');
+
+    const scoreOption = (d: typeof leftD) => {
+      const nextP = smartState.indicators.people + (d.people || 0);
+      const nextM = smartState.indicators.military + (d.military || 0);
+      const nextT = smartState.indicators.treasury + (d.treasury || 0);
+      const nextN = smartState.indicators.nobles + (d.nobles || 0);
+      const minVal = Math.min(nextP, nextM, nextT, nextN);
+      const sumVal = nextP + nextM + nextT + nextN;
+      return minVal * 5 + sumVal;
+    };
+
+    const side = scoreOption(leftD) >= scoreOption(rightD) ? 'left' : 'right';
+    smartState = applyCardChoice(smartState, side);
+  }
+  assert.ok(
+    smartState.turn >= 60,
+    `Expected strategic player in Normal mode to survive at least 60 cards naturally, survived ${smartState.turn}`
+  );
+
+  // 2. Simulate runs where player consistently picks options that hurt Nobles, Military, People, or Treasury in Normal mode
+  for (const targetKey of ['nobles', 'military', 'people', 'treasury'] as const) {
     let state = createInitialGameState({
       playerName: 'Aegon',
       modeId: 'normal',
@@ -95,8 +142,7 @@ test('Rebalanced 64k+ card pool has zero hidden positive lens/stance inflation a
       eraId: 'robert_reign',
     });
 
-    for (let step = 0; step < 30 && state.status === 'playing'; step++) {
-      // Keep the other 3 indicators healthy so we isolate the target indicator's natural drop to 0
+    for (let step = 0; step < 45 && state.status === 'playing'; step++) {
       for (const k of ['people', 'military', 'treasury', 'nobles'] as const) {
         if (k !== targetKey) state.indicators[k] = 80;
       }
@@ -106,7 +152,7 @@ test('Rebalanced 64k+ card pool has zero hidden positive lens/stance inflation a
       state = applyCardChoice(state, side);
     }
 
-    assert.equal(state.status, 'defeat', `Expected natural defeat on ${targetKey} within 30 turns`);
+    assert.equal(state.status, 'defeat', `Expected natural defeat on ${targetKey} within 45 turns`);
     assert.equal(state.indicators[targetKey], 0, `Expected ${targetKey} to hit 0`);
     assert.equal(state.endingSummary?.triggerIndicator, targetKey);
   }

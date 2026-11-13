@@ -129,7 +129,7 @@ export const CANON_AND_CHAIN_CARDS: ScenarioCard[] = [
     rightChoice: {
       label: 'Taht salonunda Joffrey ve Cersei’nin yanında dur; Ned Stark’ın Baelor Septi’ndeki hükmünü izle.',
       outcomeText: 'Joffrey sözünü tutmayıp Sör Ilyn Payne’e "Kellesini getirin!" emrini verdi. Ned Stark’ın idamı Kuzey’i ve tüm Westeros’u ateşe attı!',
-      indicators: { people: -12, military: 5, treasury: 8, nobles: -10, reason: 'Ned Stark idam edildi; Kuzey ayaklandı ve Beş Kralın Savaşı patlak verdi.' },
+      indicators: { people: -10, military: 5, treasury: 8, nobles: -10, reason: 'Ned Stark idam edildi; Kuzey ayaklandı ve Beş Kralın Savaşı patlak verdi.' },
       relations: [
         { characterId: 'ned_stark', delta: -100, setStatus: 'dead' },
         { characterId: 'robb_stark', delta: -40 },
@@ -258,7 +258,7 @@ export const CANON_AND_CHAIN_CARDS: ScenarioCard[] = [
     leftChoice: {
       label: 'Altınları savunma zincirine ve şehir garnizonuna yatır.',
       outcomeText: 'Liman savunması aşılmaz hale geldi, komutanlar Tyrion ile kurduğun ortaklığı ayakta alkışladı.',
-      indicators: { people: -3, military: 12, treasury: 4, nobles: -4, reason: 'Tyrion’ın stratejik planı hem askeri gücü hem hazineyi artırdı.' },
+      indicators: { people: -3, military: 10, treasury: 4, nobles: -4, reason: 'Tyrion’ın stratejik planı hem askeri gücü hem hazineyi artırdı.' },
       relations: [
         { characterId: 'tyrion_lannister', delta: 10 },
         { characterId: 'bronn', delta: 8 },
@@ -269,7 +269,7 @@ export const CANON_AND_CHAIN_CARDS: ScenarioCard[] = [
     rightChoice: {
       label: 'Geliri Flea Bottom fırınlarına ve halka dağıt.',
       outcomeText: 'Başkent sokaklarında senin ve Tyrion’ın şerefine dualar edildi.',
-      indicators: { people: 14, military: -4, treasury: 2, nobles: -5, reason: 'Halkın açlığı giderildi, isyan riski ortadan kalktı.' },
+      indicators: { people: 10, military: -4, treasury: 2, nobles: -5, reason: 'Halkın açlığı giderildi, isyan riski ortadan kalktı.' },
       relations: [
         { characterId: 'tyrion_lannister', delta: 10 },
         { characterId: 'varys', delta: 12 },
@@ -298,7 +298,7 @@ export const CANON_AND_CHAIN_CARDS: ScenarioCard[] = [
     leftChoice: {
       label: 'Dişini sık ve Lannister borcunu kendi hazinenden öde.',
       outcomeText: 'Hazine ağır darbe aldı ve Tyrion uzaktan kadehini kaldırıp acı acı gülümsedi.',
-      indicators: { people: -6, military: 0, treasury: -14, nobles: -4, reason: 'Cersei seni kendi çıkarları için kullandı; hazinen boşaldı.' },
+      indicators: { people: -6, military: 0, treasury: -10, nobles: -4, reason: 'Cersei seni kendi çıkarları için kullandı; hazinen boşaldı.' },
       relations: [
         { characterId: 'cersei_lannister', delta: 4 },
         { characterId: 'tyrion_lannister', delta: -5 },
@@ -357,7 +357,7 @@ export const CANON_AND_CHAIN_CARDS: ScenarioCard[] = [
     rightChoice: {
       label: 'Misafirlik hakkı kutsaldır de; düğüne silahsız girilmesine ses çıkarma.',
       outcomeText: 'Kapılar sürgülendi ve müzisyenler "The Rains of Castamere" çalmaya başladı. Roose Bolton hançerini saplarken "Lannisterlar selamlarını iletiyor" dedi.',
-      indicators: { people: -14, military: -12, treasury: 6, nobles: -10, reason: 'Kızıl Düğün katliamı gerçekleşti; Kuzey’in kalbi parçalandı.' },
+      indicators: { people: -10, military: -10, treasury: 6, nobles: -10, reason: 'Kızıl Düğün katliamı gerçekleşti; Kuzey’in kalbi parçalandı.' },
       relations: [
         { characterId: 'robb_stark', delta: -100, setStatus: 'dead' },
         { characterId: 'catelyn_stark', delta: -100, setStatus: 'dead' },
@@ -391,7 +391,7 @@ export const CANON_AND_CHAIN_CARDS: ScenarioCard[] = [
     leftChoice: {
       label: 'Robb ile Casterly Rock ve King’s Landing üzerine ortak sefer başlat.',
       outcomeText: 'Genç Kurt’un süvarileri Lannister ikmal hatlarını yarıp geçti!',
-      indicators: { people: 6, military: 14, treasury: 8, nobles: 6, reason: 'Kuzey ordusuyla ortak taarruz büyük askeri ve ekonomik ganimet getirdi.' },
+      indicators: { people: 6, military: 10, treasury: 8, nobles: 6, reason: 'Kuzey ordusuyla ortak taarruz büyük askeri ve ekonomik ganimet getirdi.' },
       relations: [
         { characterId: 'robb_stark', delta: 15 },
         { characterId: 'tywin_lannister', delta: -20 },
@@ -408,7 +408,7 @@ export const CANON_AND_CHAIN_CARDS: ScenarioCard[] = [
     rightChoice: {
       label: 'Orduları Duvar’ı ve Kuzey kalelerini yaklaşan kışa hazırlamak için görevlendir.',
       outcomeText: 'Winterfell ve Castle Black ambarları ağzına kadar dolduruldu; Kuzey hiç olmadığı kadar güçlü.',
-      indicators: { people: 12, military: 8, treasury: -4, nobles: 10, reason: 'Kuzey kaleleri kışa ve ölüler ordusuna karşı tahkim edildi.' },
+      indicators: { people: 10, military: 8, treasury: -4, nobles: 10, reason: 'Kuzey kaleleri kışa ve ölüler ordusuna karşı tahkim edildi.' },
       relations: [
         { characterId: 'robb_stark', delta: 12 },
         { characterId: 'jon_snow', delta: 18 },
@@ -553,7 +553,7 @@ export const CANON_AND_CHAIN_CARDS: ScenarioCard[] = [
     rightChoice: {
       label: 'Köle efendilerinin tüm servetine el koyup halk meclislerini silahlandır.',
       outcomeText: 'Azat edilen halk senin ve Daenerys’in etrafında etten duvar ördü; soylu efendiler ise öfkeyle geri çekildi.',
-      indicators: { people: 14, military: 4, treasury: 12, nobles: -12, reason: 'Köle Körfezi hazineleri ele geçirildi, halk desteği zirveye çıktı.' },
+      indicators: { people: 10, military: 4, treasury: 10, nobles: -10, reason: 'Köle Körfezi hazineleri ele geçirildi, halk desteği zirveye çıktı.' },
       relations: [
         { characterId: 'daenerys_targaryen', delta: 18 },
         { characterId: 'missandei', delta: 20 },
@@ -632,7 +632,7 @@ export const CANON_AND_CHAIN_CARDS: ScenarioCard[] = [
     leftChoice: {
       label: 'Mahzenlere baskın yapıp çılgınateş mumlarını söndür; High Sparrow’u kendi mahkemenle tutuklat!',
       outcomeText: 'Büyük patlama son saniyede önlendi! Margaery ve Olenna Tyrell kurtarıldı, High Sparrow’un fanatikleri silahsızlandırıldı!',
-      indicators: { people: 6, military: 6, treasury: 8, nobles: 14, reason: 'Baelor Septi ve Tyrell hanedanı yıkımdan kurtarıldı!' },
+      indicators: { people: 6, military: 6, treasury: 8, nobles: 10, reason: 'Baelor Septi ve Tyrell hanedanı yıkımdan kurtarıldı!' },
       relations: [
         { characterId: 'margaery_tyrell', delta: 35, setStatus: 'alive' },
         { characterId: 'olenna_tyrell', delta: 30, setStatus: 'alive' },
@@ -646,7 +646,7 @@ export const CANON_AND_CHAIN_CARDS: ScenarioCard[] = [
     rightChoice: {
       label: 'Kızıl Kale balkonuna çekil ve yeşil alevlerin Baelor Septi’ni yutmasını izle.',
       outcomeText: 'Kulakları sağır eden bir patlamayla Baelor Septi yeşil alevler içinde yok oldu! High Sparrow ve rakiplerin küle döndü ama halk dehşete kapıldı.',
-      indicators: { people: -15, military: 8, treasury: 4, nobles: -12, reason: 'Baelor Septi çılgınateşle yok edildi; rakipler silindi ama halk ve soylular sarsıldı.' },
+      indicators: { people: -10, military: 8, treasury: 4, nobles: -10, reason: 'Baelor Septi çılgınateşle yok edildi; rakipler silindi ama halk ve soylular sarsıldı.' },
       relations: [
         { characterId: 'high_sparrow', delta: -100, setStatus: 'dead' },
         { characterId: 'margaery_tyrell', delta: -100, setStatus: 'dead' },
@@ -681,7 +681,7 @@ export const CANON_AND_CHAIN_CARDS: ScenarioCard[] = [
     leftChoice: {
       label: 'Vadi Şövalyeleri ile Bolton kanatlarına ağır süvari hücumu başlat ve Winterfell kapısını kır!',
       outcomeText: 'Borular çaldı ve Vadi süvarileri Bolton çemberini paramparça etti! Winterfell burçlarında yeniden Stark kurdu dalgalanıyor!',
-      indicators: { people: 12, military: 10, treasury: -4, nobles: 12, reason: 'Winterfell geri alındı, Ramsay Bolton esir düştü!' },
+      indicators: { people: 10, military: 10, treasury: -4, nobles: 10, reason: 'Winterfell geri alındı, Ramsay Bolton esir düştü!' },
       relations: [
         { characterId: 'jon_snow', delta: 25 },
         { characterId: 'sansa_stark', delta: 25 },
@@ -695,7 +695,7 @@ export const CANON_AND_CHAIN_CARDS: ScenarioCard[] = [
     rightChoice: {
       label: 'Bolton sancaktarlarına (Umber ve Karstark) genel af teklif ederek Ramsay’yi savaş meydanında yalnız bırak.',
       outcomeText: 'Kuzey hanedanları Ramsay’nin zulmünden bıkıp sancaklarını indirdi. Tek bir Stark askeri daha ölmeden Ramsay kendi tazılarına yem oldu!',
-      indicators: { people: 10, military: 14, treasury: 0, nobles: 10, reason: 'Kuzey ordusu kayıp vermeden birleşti!' },
+      indicators: { people: 10, military: 10, treasury: 0, nobles: 10, reason: 'Kuzey ordusu kayıp vermeden birleşti!' },
       relations: [
         { characterId: 'sansa_stark', delta: 20 },
         { characterId: 'jon_snow', delta: 20 },
@@ -729,7 +729,7 @@ export const CANON_AND_CHAIN_CARDS: ScenarioCard[] = [
     leftChoice: {
       label: 'Ejderha ateşi ve Valyria çeliği muhafızlarınla Ak Gezen generallere yüklenerek Arya’ya koridor aç!',
       outcomeText: 'Arya Stark gölgelerden fırladı, Valyria çeliği hançerini diğer eline düşürüp Night King’in kalbine sapladı! Gece Kralı ve tüm ölüler ordusu buz kristallerine dönüşerek dağıldı!',
-      indicators: { people: 15, military: 8, treasury: -6, nobles: 15, reason: 'Night King yok edildi! Uzun Gece sona erdi, insanlık kurtuldu!' },
+      indicators: { people: 10, military: 8, treasury: -6, nobles: 10, reason: 'Night King yok edildi! Uzun Gece sona erdi, insanlık kurtuldu!' },
       relations: [
         { characterId: 'arya_stark', delta: 35 },
         { characterId: 'bran_stark', delta: 25 },
@@ -745,7 +745,7 @@ export const CANON_AND_CHAIN_CARDS: ScenarioCard[] = [
     rightChoice: {
       label: 'Bran’in warg gücü ve Melisandre’nin ateş çemberiyle Gece Kralı’nı obsidyen tuzağına çek!',
       outcomeText: 'Kadim ateş ve ejderha camı mızrakları aynı anda Night King’i delip geçti! Şafak Kuzey’in üzerinde yeniden doğdu!',
-      indicators: { people: 14, military: 10, treasury: -4, nobles: 12, reason: 'Karanlık ordu stratejik tuzakla imha edildi; şafak geri döndü.' },
+      indicators: { people: 10, military: 10, treasury: -4, nobles: 10, reason: 'Karanlık ordu stratejik tuzakla imha edildi; şafak geri döndü.' },
       relations: [
         { characterId: 'bran_stark', delta: 30 },
         { characterId: 'melisandre', delta: 25 },
@@ -779,7 +779,7 @@ export const CANON_AND_CHAIN_CARDS: ScenarioCard[] = [
     leftChoice: {
       label: 'Daenerys’i sakinleştir; şehri yakmadan sadece Kızıl Kale’yi teslim al ve Büyük Konsey’i topla.',
       outcomeText: 'Yarım milyon masum insan ateşten kurtuldu! Başkent halkı seni ve Daenerys’i kurtarıcı olarak selamlarken yeni bir anayasal düzenin temeli atıldı.',
-      indicators: { people: 18, military: 6, treasury: 8, nobles: 14, reason: 'King’s Landing yıkımdan kurtarıldı; Westeros’ta barış ve adalet çağı başladı.' },
+      indicators: { people: 10, military: 6, treasury: 8, nobles: 10, reason: 'King’s Landing yıkımdan kurtarıldı; Westeros’ta barış ve adalet çağı başladı.' },
       relations: [
         { characterId: 'daenerys_targaryen', delta: 25 },
         { characterId: 'jon_snow', delta: 30 },
@@ -794,7 +794,7 @@ export const CANON_AND_CHAIN_CARDS: ScenarioCard[] = [
     rightChoice: {
       label: 'Kızıl Kale’yi ejderha ateşiyle erit ve Demir Taht’ın eski düzenini küllerden yeniden kur!',
       outcomeText: 'Drogon’un alevleri Kızıl Kale’yi ve Demir Taht’ı eritti. Korku tüm muhalifleri susturdu ama halkın kalbinde derin bir yara kaldı.',
-      indicators: { people: -14, military: 14, treasury: -6, nobles: 6, reason: 'Kızıl Kale ateş ve kanla düştü; mutlak otorite kuruldu.' },
+      indicators: { people: -10, military: 10, treasury: -6, nobles: 6, reason: 'Kızıl Kale ateş ve kanla düştü; mutlak otorite kuruldu.' },
       relations: [
         { characterId: 'daenerys_targaryen', delta: 15 },
         { characterId: 'jon_snow', delta: -20 },
@@ -856,7 +856,7 @@ export const CANON_AND_CHAIN_CARDS: ScenarioCard[] = [
     leftChoice: {
       label: 'Suçluyu tüm lordların önünde açık mahkemede yargıla ve mallarını hazineye devret.',
       outcomeText: 'Adil yargılama soylulara ve halka hukukun üstünlüğünü gösterdi; hainin serveti hazineye aktarıldı.',
-      indicators: { people: 8, military: 4, treasury: 12, nobles: 8, reason: 'Suikastçı adalet önünde mahkum edildi ve servetine el konuldu.' },
+      indicators: { people: 8, military: 4, treasury: 10, nobles: 8, reason: 'Suikastçı adalet önünde mahkum edildi ve servetine el konuldu.' },
       relations: [
         { characterId: 'arya_stark', delta: 8 },
         { characterId: 'davos_seaworth', delta: 12 },
@@ -895,7 +895,7 @@ export const CANON_AND_CHAIN_CARDS: ScenarioCard[] = [
     leftChoice: {
       label: 'Kılıcı kuşan ve ordunun başında bizzat taşı!',
       outcomeText: 'Efsanevi Valyria kılıcı elindeyken askerlerinin morali ve şövalyelerin sana duyduğu saygı doruğa ulaştı!',
-      indicators: { people: 6, military: 15, treasury: 0, nobles: 10, reason: 'Nadir Valyria kılıcı askeri gücünü ve prestijini katladı!' },
+      indicators: { people: 6, military: 10, treasury: 0, nobles: 10, reason: 'Nadir Valyria kılıcı askeri gücünü ve prestijini katladı!' },
       relations: [
         { characterId: 'gendry', delta: 15 },
         { characterId: 'jon_snow', delta: 12 },
@@ -908,7 +908,7 @@ export const CANON_AND_CHAIN_CARDS: ScenarioCard[] = [
     rightChoice: {
       label: 'Braavos Demir Bankası’na teminat göstererek krallığa devasa bir altın fonu aç.',
       outcomeText: 'Demir Bankası kılıcın teminatıyla hazineye görülmemiş bir kredi ve ticaret imtiyazı tanıdı!',
-      indicators: { people: 8, military: 4, treasury: 20, nobles: 6, reason: 'Valyria mirası hazineyi altınla doldurdu.' },
+      indicators: { people: 8, military: 4, treasury: 10, nobles: 6, reason: 'Valyria mirası hazineyi altınla doldurdu.' },
       relations: [{ characterId: 'tyrion_lannister', delta: 14 }],
       setFlags: ['iron_bank_golden_credit'],
       isMajorDecision: true,
@@ -933,7 +933,7 @@ export const CANON_AND_CHAIN_CARDS: ScenarioCard[] = [
     leftChoice: {
       label: 'Gözlerini kaçırma ve elini korkusuzca ejderhanın pullarına koy.',
       outcomeText: 'Ejderha derin bir hırıltıyla eline başını eğdi! Daenerys hayranlıkla fısıldadı: "Ejderhalarım herkese boyun eğmez, {{playerName}}."',
-      indicators: { people: 8, military: 16, treasury: 0, nobles: 12, reason: 'Ejderhanın güvenini kazandın! Gökyüzünün gücü seninle.' },
+      indicators: { people: 8, military: 10, treasury: 0, nobles: 10, reason: 'Ejderhanın güvenini kazandın! Gökyüzünün gücü seninle.' },
       relations: [
         { characterId: 'daenerys_targaryen', delta: 28, triggerRomance: true },
         { characterId: 'jon_snow', delta: 12 },
@@ -973,7 +973,7 @@ export const CANON_AND_CHAIN_CARDS: ScenarioCard[] = [
     leftChoice: {
       label: 'Teklifi kabul et ve kutsal yeminle hayatlarınızı birleştir.',
       outcomeText: 'Gizli evlilik yemini hem kalbini ısıttı hem de Highgarden’ın sınırsız desteğini arkana aldı!',
-      indicators: { people: 12, military: 8, treasury: 14, nobles: 10, reason: 'Gizli hanedan evliliği hazineyi ve halk desteğini coşturdu.' },
+      indicators: { people: 10, military: 8, treasury: 10, nobles: 10, reason: 'Gizli hanedan evliliği hazineyi ve halk desteğini coşturdu.' },
       relations: [
         { characterId: 'margaery_tyrell', delta: 35, triggerRomance: true },
         { characterId: 'olenna_tyrell', delta: 20 },
@@ -986,7 +986,7 @@ export const CANON_AND_CHAIN_CARDS: ScenarioCard[] = [
     rightChoice: {
       label: 'Kalbin istese de krallığın dengesi için evliliği resmi konsey kararıyla yapmayı öner.',
       outcomeText: 'Margaery sağduyuna saygı duydu ve resmi nişan hazırlıkları tüm soyluların onayıyla başladı.',
-      indicators: { people: 8, military: 4, treasury: 8, nobles: 14, reason: 'Resmi nişan tüm büyük hanedanların takdirini topladı.' },
+      indicators: { people: 8, military: 4, treasury: 8, nobles: 10, reason: 'Resmi nişan tüm büyük hanedanların takdirini topladı.' },
       relations: [
         { characterId: 'margaery_tyrell', delta: 18 },
         { characterId: 'olenna_tyrell', delta: 15 },

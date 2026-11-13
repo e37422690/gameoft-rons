@@ -14,23 +14,23 @@ export const DIFFICULTY_MODES: Record<DifficultyId, DifficultyConfig> = {
   easy: {
     id: 'easy',
     name: 'Kolay Mod',
-    shortRule: 'Mevcut Dinamikler (1x Düşüş / Tam Artış)',
+    shortRule: 'En Fazla +10 Artış · En Fazla -5 Düşüş',
     description:
-      'Mevcut temel denge dinamikleri korunur. Olumsuz ve olumlu kararlar göstergeleri standart oranda (1x) etkiler; hikayeyi daha rahat deneyimlemek isteyenler içindir.',
+      'Hikâyeyi ve diplomasiyi daha rahat deneyimlemek isteyenler içindir. Kararlarınız dengeleri en fazla +10 puan artırabilirken, olumsuz etkiler yarıya indirilerek en fazla 5 puan (-5) düşürebilir.',
   },
   normal: {
     id: 'normal',
     name: 'Normal Mod (Varsayılan)',
-    shortRule: 'Hazine 2x Düşüş · Diğerleri 3x Düşüş · Tam Artış',
+    shortRule: 'En Fazla +10 Artış · En Fazla -10 Düşüş',
     description:
-      'Varsayılan dengeli zorluk. Olumsuz kararlarda Hazine 2 katı, diğer göstergeler (Halk, Askerî, Soylular) ise 3 katı düşüş yaşar. Olumlu kararlar normal değerinde yükseltir.',
+      'Varsayılan dengeli Westeros deneyimi. Olumlu kararlar göstergeleri en fazla +10 puan artırabilir, olumsuz kararlar ise en fazla 10 puan (-10) düşürebilir.',
   },
   hard: {
     id: 'hard',
     name: 'Zor Mod',
-    shortRule: 'Hazine 2x Düşüş · Diğerleri 3x Düşüş · Artışlar 1-2 Puan Az',
+    shortRule: 'En Fazla +7 Artış · En Fazla -10 Düşüş',
     description:
-      'Acımasız Westeros gerçekliği. Olumsuz kararlarda Hazine 2 katı, diğer değerler 3 katı düşer; olumlu kararlar ise normale göre 1–2 puan daha az yükseltir (örn. +3 yerine +2, +7 yerine +5).',
+      'Acımasız Westeros gerçekliği. Olumsuz kararlar göstergeleri 10 puana (-10) kadar düşürebilirken, olumlu kararlar dengeleri en fazla +7 puan artırabilir.',
   },
 };
 

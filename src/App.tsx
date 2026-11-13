@@ -14,6 +14,7 @@ import {
   MAX_UNDO_STEPS,
   applyCardChoice,
   createInitialGameState,
+  sanitizeCampaignName,
   sanitizePlayerName,
   scaleIndicatorDeltaForDifficulty,
   undoLastDecision,
@@ -76,6 +77,7 @@ export function App() {
   const [audioSettings, setAudioSettings] = useState<AudioSettings>(() => loadAudioSettings());
 
   // New Game Setup Form State (Pre-filled from previous player name, never hardcoded to "Ahmet")
+  const [setupCampaignName, setSetupCampaignName] = useState<string>('');
   const [setupName, setSetupName] = useState<string>(() => loadLastPlayerName());
   const [setupNameError, setSetupNameError] = useState<string>('');
   const [setupDifficulty, setSetupDifficulty] = useState<DifficultyId>('normal');
@@ -103,19 +105,14 @@ export function App() {
     document.body.dataset.state = mapped;
   }, [screen]);
 
-  // Focus player name input when entering setup screen
+  // Focus player name input ONLY once when entering setup screen (do not depend on setupName so user can freely edit/clear!)
   useEffect(() => {
     if (screen === 'setup') {
-      const storedPrev = loadLastPlayerName();
-      if (!setupName && storedPrev) {
-        setSetupName(storedPrev);
-      }
       window.setTimeout(() => {
         setupInputRef.current?.focus();
-        setupInputRef.current?.select();
       }, 40);
     }
-  }, [screen, setupName]);
+  }, [screen]);
 
   // Start gentle GoT background theme music on first user gesture
   useEffect(() => {
@@ -210,6 +207,7 @@ export function App() {
   const openSetupWithRememberedName = useCallback(() => {
     const prevName = loadLastPlayerName() || runStateRef.current?.playerName || '';
     setSetupName(prevName);
+    setSetupCampaignName('');
     setSetupNameError('');
     setScreen('setup');
   }, []);
@@ -231,6 +229,7 @@ export function App() {
   const handleStartConfiguredGame = (e: React.FormEvent) => {
     e.preventDefault();
     const clean = sanitizePlayerName(setupName);
+    const cleanCampaign = sanitizeCampaignName(setupCampaignName);
     if (!clean) {
       setSetupNameError(
         isEn
@@ -249,6 +248,7 @@ export function App() {
 
     const fresh = createInitialGameState({
       playerName: clean,
+      campaignName: cleanCampaign || undefined,
       modeId: setupMode,
       difficultyId: setupDifficulty,
       roleId: setupRole,
@@ -469,7 +469,7 @@ export function App() {
       : null;
 
   return (
-    <div className="relative w-screen h-screen overflow-hidden select-none flex flex-col justify-between">
+    <div className="relative w-screen h-screen h-[100dvh] overflow-hidden select-none flex flex-col justify-between">
       {/* Isolated 60fps Canvas2D Ambient Stage */}
       <AmbientStageCanvas
         regionId={activeRegionId}
@@ -640,10 +640,10 @@ export function App() {
           </div>
 
           {/* Flat Single-Line Control Hint in Bottom Safe Margin */}
-          <div className="text-xs text-[#9c8e78] text-center">
+          <div className="text-[11px] sm:text-xs text-[#9c8e78] text-center px-2">
             {isEn
-              ? 'A / Left & D / Right: 1st Press Previews Impact, 2nd Press Confirms · Z Undo (Last 10) · Esc Pause'
-              : 'A / Sol Ok ve D / Sağ Ok: 1. Basış Sonucu Önizler, 2. Basış Kararı Verir · Z Geri Al (Son 10) · Esc Duraklat'}
+              ? 'Slide Card Slowly (Mouse or Touch) to Preview Balances · A / D: 1st Press Previews, 2nd Confirms · Z Undo'
+              : 'Kartı Parmağınızla veya Fareyle Yavaşça Kaydırarak Dengeleri Görün · A / D: 1. Basış Önizler, 2. Basış Onaylar · Z Geri Al'}
           </div>
         </main>
       )}
@@ -677,52 +677,109 @@ export function App() {
               </button>
             </div>
 
-            {/* Step 1: Player Name / Title of Address (Asked every setup, pre-filled with previous name) */}
-            <div className="space-y-1.5">
-              <label htmlFor="player-name-input" className="block text-xs font-bold text-[#d4af37]">
-                {isEn
-                  ? '1. HOW SHALL THE REALM ADDRESS YOU? (YOUR NAME / TITLE)'
-                  : '1. DİYAR SİZE NASIL HİTAP ETSİN? (HÜKÜMDAR / HİTAP İSMİNİZ)'}
-              </label>
-              <input
-                ref={setupInputRef}
-                id="player-name-input"
-                data-testid="setup-name-input"
-                type="text"
-                value={setupName}
-                onChange={(e) => {
-                  setSetupName(e.target.value);
-                  if (setupNameError) setSetupNameError('');
-                }}
-                placeholder={
-                  isEn
-                    ? 'Enter your name of address (e.g., Aegon, Rhaenyra, Eddard...)'
-                    : 'Hitap isminizi yazın (Örn: Aegon, Rhaenyra, Eddard, Alparslan...)'
-                }
-                maxLength={32}
-                className="w-full px-3.5 py-2.5 rounded-lg bg-[#0d0b11] border border-[#b48e4b]/50 text-[#f5ebd6] text-sm focus:outline-none focus:border-[#d4af37]"
-              />
-              {setupNameError && <p className="text-xs text-[#f87171]">{setupNameError}</p>}
-              <p className="text-[11px] text-[#9c8e78]">
-                {isEn ? (
-                  <>
-                    Across all council decrees and dialogues you will be addressed as{' '}
-                    <strong className="text-[#e8dcc4]">
-                      "{EN_PLAYER_ROLES[setupRole].titlePrefix} {sanitizePlayerName(setupName) || '...'}"
-                    </strong>
-                    . (Your last used name is automatically remembered for future games.)
-                  </>
-                ) : (
-                  <>
-                    Hikâyede ve tüm karakter diyaloglarında{' '}
-                    <strong className="text-[#e8dcc4]">
-                      "{PLAYER_ROLES.find((r) => r.id === setupRole)?.titlePrefix}{' '}
-                      {sanitizePlayerName(setupName) || '...'}"
-                    </strong>{' '}
-                    olarak anılacaksınız. (Bir önceki hitap isminiz sonraki oyunlar için otomatik hatırlanır.)
-                  </>
-                )}
-              </p>
+            {/* Step 1: Custom Game / Campaign Name + Player Name / Title of Address */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 p-3.5 rounded-xl bg-[#17141f] border border-[#b48e4b]/35">
+              {/* 1A: Custom Ruler / Title of Address */}
+              <div className="space-y-1.5">
+                <label htmlFor="player-name-input" className="block text-xs font-bold text-[#d4af37]">
+                  {isEn
+                    ? '1A. YOUR RULER / ADDRESS NAME'
+                    : '1A. HÜKÜMDAR / HİTAP İSMİNİZ (BU OYUNA ÖZEL)'}
+                </label>
+                <div className="relative flex items-center">
+                  <input
+                    ref={setupInputRef}
+                    id="player-name-input"
+                    data-testid="setup-name-input"
+                    type="text"
+                    value={setupName}
+                    onChange={(e) => {
+                      setSetupName(e.target.value);
+                      if (setupNameError) setSetupNameError('');
+                    }}
+                    placeholder={
+                      isEn
+                        ? 'Enter ruler name (e.g., Aegon, Rhaenyra...)'
+                        : 'Bu oyun için hitap ismi yazın (Örn: Aegon, Alparslan...)'
+                    }
+                    maxLength={32}
+                    className="w-full pl-3.5 pr-9 py-2.5 rounded-lg bg-[#0d0b11] border border-[#b48e4b]/50 text-[#f5ebd6] text-sm focus:outline-none focus:border-[#d4af37]"
+                  />
+                  {setupName && (
+                    <button
+                      type="button"
+                      aria-label={isEn ? 'Clear ruler name' : 'Hitap ismini temizle'}
+                      title={isEn ? 'Clear to type a new name' : 'Yeni isim yazmak için temizle'}
+                      onClick={() => {
+                        setSetupName('');
+                        setupInputRef.current?.focus();
+                      }}
+                      className="absolute right-2.5 px-1.5 py-0.5 rounded bg-[#272230] hover:bg-[#383046] text-xs font-bold text-[#e8dcc4]"
+                    >
+                      ×
+                    </button>
+                  )}
+                </div>
+                {setupNameError && <p className="text-xs text-[#f87171]">{setupNameError}</p>}
+                <p className="text-[11px] text-[#9c8e78] leading-snug">
+                  {isEn ? (
+                    <>
+                      Addressed in this game as:{' '}
+                      <strong className="text-[#e8dcc4]">
+                        "{EN_PLAYER_ROLES[setupRole].titlePrefix} {sanitizePlayerName(setupName) || '...'}"
+                      </strong>
+                    </>
+                  ) : (
+                    <>
+                      Bu oyunda hitap:{' '}
+                      <strong className="text-[#e8dcc4]">
+                        "{PLAYER_ROLES.find((r) => r.id === setupRole)?.titlePrefix}{' '}
+                        {sanitizePlayerName(setupName) || '...'}"
+                      </strong>
+                    </>
+                  )}
+                </p>
+              </div>
+
+              {/* 1B: Custom Game / Save Title for this specific campaign */}
+              <div className="space-y-1.5">
+                <label htmlFor="campaign-name-input" className="block text-xs font-bold text-[#d4af37]">
+                  {isEn
+                    ? '1B. CUSTOM GAME / CAMPAIGN TITLE'
+                    : '1B. OYUNA ÖZEL İSİM / KAYIT BAŞLIĞI'}
+                </label>
+                <div className="relative flex items-center">
+                  <input
+                    id="campaign-name-input"
+                    data-testid="setup-campaign-name-input"
+                    type="text"
+                    value={setupCampaignName}
+                    onChange={(e) => setSetupCampaignName(e.target.value)}
+                    placeholder={
+                      isEn
+                        ? 'e.g., Northern Rebellion, Targaryen Restoration...'
+                        : 'Örn: Kuzeyin İntikamı, Demir Taht Seferi, 1. Oyunum...'
+                    }
+                    maxLength={48}
+                    className="w-full pl-3.5 pr-9 py-2.5 rounded-lg bg-[#0d0b11] border border-[#b48e4b]/50 text-[#f5ebd6] text-sm focus:outline-none focus:border-[#d4af37]"
+                  />
+                  {setupCampaignName && (
+                    <button
+                      type="button"
+                      aria-label={isEn ? 'Clear campaign title' : 'Oyun ismini temizle'}
+                      onClick={() => setSetupCampaignName('')}
+                      className="absolute right-2.5 px-1.5 py-0.5 rounded bg-[#272230] hover:bg-[#383046] text-xs font-bold text-[#e8dcc4]"
+                    >
+                      ×
+                    </button>
+                  )}
+                </div>
+                <p className="text-[11px] text-[#9c8e78] leading-snug">
+                  {isEn
+                    ? 'Give this specific game run a custom name to distinguish it in Saved Games & Backups (optional).'
+                    : 'Bu oyuna özel bir kayıt/sefer ismi verin; Kayıtlı Oyunlar listesinde ve yedeklerde bu isimle görünür (isteğe bağlı).'}
+                </p>
+              </div>
             </div>
 
             {/* Step 2: 3 Difficulty / Balance Modes (Easy, Normal [Default], Hard) */}
@@ -908,12 +965,23 @@ export function App() {
           3. ACTIVE PLAYING HUD & CARD TABLE
          ===================================================================== */}
       {(screen === 'playing' || screen === 'paused' || screen === 'gameover') && runState && (
-        <div className="relative z-10 w-full h-full flex flex-col justify-between pb-3 pointer-events-none overflow-y-auto">
+        <div className="relative z-10 w-full h-full flex flex-col justify-between pb-1.5 sm:pb-3 pointer-events-none overflow-y-auto overflow-x-hidden">
           {/* Top Zone: Compact Status Bar + 4 Indicators */}
-          <div className="w-full">
-            <div className="w-full max-w-4xl mx-auto px-3 pt-2.5 flex items-center justify-between gap-2 pointer-events-auto flex-wrap">
+          <div className="w-full shrink-0">
+            <div className="w-full max-w-4xl mx-auto px-2 sm:px-3 pt-1.5 sm:pt-2.5 flex items-center justify-between gap-1.5 sm:gap-2 pointer-events-auto flex-wrap">
               {/* Left Run Identity & Progress */}
-              <div className="flex items-center gap-2 text-xs text-[#e8dcc4] bg-[#131118]/95 border border-[#b48e4b]/35 px-3 py-1.5 rounded-lg flex-wrap">
+              <div className="flex items-center gap-1.5 sm:gap-2 text-[11px] sm:text-xs text-[#e8dcc4] bg-[#131118]/95 border border-[#b48e4b]/35 px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-lg flex-wrap">
+                {runState.campaignName && (
+                  <>
+                    <span
+                      data-testid="hud-campaign-name"
+                      className="font-bold text-[#f5ebd6] bg-[#251e30] px-1.5 py-0.5 rounded border border-[#d4af37]/40"
+                    >
+                      {runState.campaignName}
+                    </span>
+                    <span aria-hidden="true">·</span>
+                  </>
+                )}
                 <span className="font-bold text-[#d4af37]">
                   {activeRoleMeta.titlePrefix} {runState.playerName}
                 </span>
@@ -924,20 +992,20 @@ export function App() {
                 >
                   {activeDifficultyMeta.name}
                 </span>
-                <span aria-hidden="true">·</span>
-                <span>{activeModeMeta.name}</span>
+                <span aria-hidden="true" className="hidden sm:inline">·</span>
+                <span className="hidden sm:inline">{activeModeMeta.name}</span>
                 <span aria-hidden="true">·</span>
                 <span data-testid="hud-decision-counter" className="font-mono-tabular font-bold text-[#f5ebd6]">
-                  {isEn ? 'Decision' : 'Karar'}: {runState.turn} / {runState.targetDecisions}
+                  {isEn ? 'Dec' : 'Karar'}: {runState.turn}/{runState.targetDecisions}
                 </span>
-                <span aria-hidden="true">·</span>
-                <span className="font-mono-tabular text-[#34d399]">
+                <span aria-hidden="true" className="hidden sm:inline">·</span>
+                <span className="font-mono-tabular text-[#34d399] hidden sm:inline">
                   {formatProgressLocalized(runState.turn, runState.targetDecisions, language)}
                 </span>
               </div>
 
               {/* Right Utility Controls including Undo (Last 10 Decisions) */}
-              <div className="flex items-center gap-1.5 flex-wrap">
+              <div className="flex items-center gap-1 sm:gap-1.5 flex-wrap">
                 <button
                   type="button"
                   data-testid="hud-undo-btn"
@@ -951,13 +1019,13 @@ export function App() {
                       ? `Undo last decision (Up to ${MAX_UNDO_STEPS} steps remaining: ${undoCount}/${MAX_UNDO_STEPS})`
                       : `Son kararı geri al (Yalnızca son ${MAX_UNDO_STEPS} karar: ${undoCount}/${MAX_UNDO_STEPS})`
                   }
-                  className={`px-2.5 py-1.5 rounded border text-xs font-mono-tabular font-bold transition-all whitespace-nowrap ${
+                  className={`px-2 sm:px-2.5 py-1 sm:py-1.5 rounded border text-[11px] sm:text-xs font-mono-tabular font-bold transition-all whitespace-nowrap ${
                     undoCount > 0
                       ? 'bg-[#251e30] hover:bg-[#342944] border-[#d4af37] text-[#fde68a] shadow-[0_0_12px_rgba(212,175,55,0.2)]'
                       : 'bg-[#131118]/60 border-[#b48e4b]/20 text-[#6e6456] cursor-not-allowed'
                   }`}
                 >
-                  ↶ {isEn ? 'Undo' : 'Geri Al'} ({undoCount}/{MAX_UNDO_STEPS}) [Z]
+                  ↶ {isEn ? 'Undo' : 'Geri Al'} ({undoCount}/{MAX_UNDO_STEPS})
                 </button>
 
                 <button
@@ -968,7 +1036,7 @@ export function App() {
                     setInspectCharId(null);
                     setActiveModal('characters');
                   }}
-                  className="px-2.5 py-1.5 rounded bg-[#131118]/95 hover:bg-[#221d2d] border border-[#b48e4b]/35 text-xs font-medium text-[#e8dcc4] whitespace-nowrap"
+                  className="px-2 sm:px-2.5 py-1 sm:py-1.5 rounded bg-[#131118]/95 hover:bg-[#221d2d] border border-[#b48e4b]/35 text-[11px] sm:text-xs font-medium text-[#e8dcc4] whitespace-nowrap"
                 >
                   {isEn ? 'Characters' : 'Karakterler'}
                 </button>
@@ -979,7 +1047,7 @@ export function App() {
                     soundEngine.playUiClick();
                     setActiveModal('journal');
                   }}
-                  className="px-2.5 py-1.5 rounded bg-[#131118]/95 hover:bg-[#221d2d] border border-[#b48e4b]/35 text-xs font-medium text-[#e8dcc4] whitespace-nowrap"
+                  className="px-2 sm:px-2.5 py-1 sm:py-1.5 rounded bg-[#131118]/95 hover:bg-[#221d2d] border border-[#b48e4b]/35 text-[11px] sm:text-xs font-medium text-[#e8dcc4] whitespace-nowrap"
                 >
                   {isEn ? 'Journal' : 'Günlük'}
                 </button>
@@ -990,7 +1058,7 @@ export function App() {
                     soundEngine.playUiClick();
                     setActiveModal('stats');
                   }}
-                  className="px-2.5 py-1.5 rounded bg-[#131118]/95 hover:bg-[#221d2d] border border-[#b48e4b]/35 text-xs font-medium text-[#e8dcc4] whitespace-nowrap"
+                  className="px-2 sm:px-2.5 py-1 sm:py-1.5 rounded bg-[#131118]/95 hover:bg-[#221d2d] border border-[#b48e4b]/35 text-[11px] sm:text-xs font-medium text-[#e8dcc4] whitespace-nowrap"
                 >
                   {isEn ? 'Stats' : 'İstatistik'}
                 </button>
@@ -1001,7 +1069,7 @@ export function App() {
                     soundEngine.playUiClick();
                     setActiveModal('settings');
                   }}
-                  className="px-2.5 py-1.5 rounded bg-[#131118]/95 hover:bg-[#221d2d] border border-[#b48e4b]/35 text-xs font-medium text-[#e8dcc4] whitespace-nowrap"
+                  className="px-2 sm:px-2.5 py-1 sm:py-1.5 rounded bg-[#131118]/95 hover:bg-[#221d2d] border border-[#b48e4b]/35 text-[11px] sm:text-xs font-medium text-[#e8dcc4] whitespace-nowrap"
                 >
                   {isEn ? 'Settings' : 'Ayarlar'}
                 </button>
@@ -1013,15 +1081,15 @@ export function App() {
                     e.currentTarget.blur();
                     handleToggleMute();
                   }}
-                  className="px-2.5 py-1.5 rounded bg-[#131118]/95 hover:bg-[#221d2d] border border-[#b48e4b]/35 text-xs font-mono-tabular text-[#e8dcc4]"
+                  className="px-2 sm:px-2.5 py-1 sm:py-1.5 rounded bg-[#131118]/95 hover:bg-[#221d2d] border border-[#b48e4b]/35 text-[11px] sm:text-xs font-mono-tabular text-[#e8dcc4]"
                 >
                   {audioSettings.sfxEnabled || audioSettings.musicEnabled
                     ? isEn
-                      ? 'Audio [M]'
-                      : 'Ses [M]'
+                      ? 'Audio'
+                      : 'Ses'
                     : isEn
-                    ? 'Muted [M]'
-                    : 'Sessiz [M]'}
+                    ? 'Muted'
+                    : 'Sessiz'}
                 </button>
                 <button
                   type="button"
@@ -1033,9 +1101,9 @@ export function App() {
                     soundEngine.playUiClick();
                     setScreen('paused');
                   }}
-                  className="px-2.5 py-1.5 rounded bg-[#131118]/95 hover:bg-[#221d2d] border border-[#b48e4b]/35 text-xs font-semibold text-[#d4af37]"
+                  className="px-2 sm:px-2.5 py-1 sm:py-1.5 rounded bg-[#131118]/95 hover:bg-[#221d2d] border border-[#b48e4b]/35 text-[11px] sm:text-xs font-semibold text-[#d4af37]"
                 >
-                  {isEn ? 'Pause [P]' : 'Duraklat [P]'}
+                  {isEn ? 'Pause' : 'Duraklat'}
                 </button>
               </div>
             </div>
@@ -1050,7 +1118,7 @@ export function App() {
           </div>
 
           {/* Center Zone: Decision Card */}
-          <div className="my-auto py-2">
+          <div className="my-auto py-1 sm:py-2">
             <DecisionCard
               card={runState.currentCard}
               playerName={runState.playerName}
@@ -1060,6 +1128,7 @@ export function App() {
               characterState={runState.characters[runState.currentCard.characterId]}
               keyboardPreviewSide={keyboardPreviewSide}
               onClearKeyboardPreview={() => setKeyboardPreviewSide(null)}
+              onSetKeyboardPreviewSide={setKeyboardPreviewSide}
               onChoose={handleCardChoice}
               onPreviewDelta={setPreviewDelta}
               onInspectCharacter={(cId) => {
@@ -1070,10 +1139,11 @@ export function App() {
           </div>
 
           {/* Bottom Safe Margin Info Strip */}
-          <div className="w-full max-w-4xl mx-auto px-3 flex items-center justify-between text-[11px] text-[#9c8e78] pointer-events-auto">
+          <div className="w-full max-w-4xl mx-auto px-2.5 sm:px-3 flex items-center justify-between text-[10px] sm:text-[11px] text-[#9c8e78] pointer-events-auto shrink-0">
             <span>
               {isEn ? 'Region:' : 'Bölge:'}{' '}
-              <strong className="text-[#d4af37]">{activeRegionBase.name}</strong> ({activeRegionSubtitle})
+              <strong className="text-[#d4af37]">{activeRegionBase.name}</strong>{' '}
+              <span className="hidden sm:inline">({activeRegionSubtitle})</span>
             </span>
             <span className="font-mono-tabular">
               {isEn ? 'Active Playtime:' : 'Aktif Süre:'}{' '}
@@ -1301,10 +1371,10 @@ export function App() {
             setActiveModal('none');
             setScreen(selectedSave.status === 'playing' ? 'playing' : 'gameover');
           }}
-          onRenameSave={(saveId, newName) => {
+          onRenameSave={(saveId, newName, newCampaignName) => {
             const target = saves.find((s) => s.saveId === saveId);
             if (!target) return;
-            const updated = updatePlayerNameInRun(target, newName);
+            const updated = updatePlayerNameInRun(target, newName, newCampaignName);
             saveLastPlayerName(updated.playerName);
             if (runState?.saveId === saveId) {
               setRunState(updated);

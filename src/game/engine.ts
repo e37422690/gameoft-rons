@@ -20,37 +20,50 @@ import { selectNextScenarioCard } from './scenarioPoolEngine';
 
 export const MAX_UNDO_STEPS = 10;
 
+export function getDifficultyBounds(difficultyId: DifficultyId = 'normal'): {
+  minDrop: number;
+  maxGain: number;
+} {
+  if (difficultyId === 'easy') {
+    return { minDrop: -5, maxGain: 10 };
+  }
+  if (difficultyId === 'hard') {
+    return { minDrop: -10, maxGain: 7 };
+  }
+  return { minDrop: -10, maxGain: 10 };
+}
+
 /**
- * Scales a single indicator delta according to the selected DifficultyId:
- * - 'easy': Classic baseline dynamics (1x negative, full positive).
- * - 'normal' (Default): Negative treasury deltas are 2x; negative people/military/nobles deltas are 3x; positive deltas unchanged.
- * - 'hard': Negative treasury deltas are 2x; negative people/military/nobles deltas are 3x; positive deltas are reduced by 1-2 points (e.g., +3 -> +2, +7 -> +5).
+ * Scales and clamps a single indicator delta according to the selected DifficultyId:
+ * - 'easy' (Kolay Mod): Positive decisions increase up to +10; negative decisions drop by at most -5 (0.5x scaled, capped to [-5, -1]).
+ * - 'normal' (Normal Mod - Default): Positive decisions increase up to +10; negative decisions drop by at most -10 (capped to [-10, +10]).
+ * - 'hard' (Zor Mod): Positive decisions increase by at most +7 (~0.7x scaled, capped to [+1, +7]); negative decisions drop by at most -10.
  */
 export function scaleSingleDeltaForDifficulty(
   val: number | undefined,
-  key: IndicatorKey,
+  _key: IndicatorKey,
   difficultyId: DifficultyId = 'normal'
 ): number {
   if (!val) return 0;
-  const rounded = Math.round(val);
-  if (rounded === 0) return 0;
+  const base = Math.max(-10, Math.min(10, Math.round(val)));
+  if (base === 0) return 0;
 
   if (difficultyId === 'easy') {
-    return rounded;
+    if (base > 0) {
+      return Math.min(10, base);
+    }
+    return Math.max(-5, Math.min(-1, Math.round(base * 0.5)));
   }
 
-  if (rounded < 0) {
-    // Both 'normal' and 'hard': 2x drop on treasury, 3x drop on people, military, nobles
-    return key === 'treasury' ? rounded * 2 : rounded * 3;
-  }
-
-  // Positive delta (rounded > 0)
   if (difficultyId === 'hard') {
-    if (rounded >= 6) return rounded - 2; // e.g., +7 -> +5
-    return Math.max(0, rounded - 1);      // e.g., +3 -> +2, +1 -> 0
+    if (base > 0) {
+      return Math.min(7, Math.max(1, Math.round(base * 0.7)));
+    }
+    return Math.max(-10, base);
   }
 
-  return rounded;
+  // 'normal' mode: symmetric [-10, +10]
+  return base;
 }
 
 export function scaleIndicatorDeltaForDifficulty(
@@ -67,7 +80,7 @@ export function scaleIndicatorDeltaForDifficulty(
 }
 
 /**
- * Safely sanitizes user-supplied player names against HTML/script injection (Section 14 & 18).
+ * Safely sanitizes user-supplied player or campaign names against HTML/script injection (Section 14 & 18).
  */
 export function sanitizePlayerName(input: string): string {
   const stripped = input
@@ -75,6 +88,14 @@ export function sanitizePlayerName(input: string): string {
     .replace(/\s+/g, ' ')
     .trim();
   return stripped.slice(0, 32);
+}
+
+export function sanitizeCampaignName(input: string): string {
+  const stripped = input
+    .replace(/[<>"'`&/;\\]/g, '')
+    .replace(/\s+/g, ' ')
+    .trim();
+  return stripped.slice(0, 44);
 }
 
 /**
@@ -108,6 +129,7 @@ function clampRelation(v: number): number {
 
 export interface CreateGameOptions {
   playerName: string;
+  campaignName?: string;
   modeId: GameModeId;
   difficultyId?: DifficultyId;
   roleId: PlayerRoleId;
@@ -117,6 +139,7 @@ export interface CreateGameOptions {
 
 export function createInitialGameState(opts: CreateGameOptions): GameRunState {
   const safeName = sanitizePlayerName(opts.playerName);
+  const safeCampaignName = opts.campaignName ? sanitizeCampaignName(opts.campaignName) : undefined;
   const modeMeta = GAME_MODES[opts.modeId] || GAME_MODES.normal;
   const difficultyId: DifficultyId = opts.difficultyId || 'normal';
   const roleMeta = PLAYER_ROLES.find((r) => r.id === opts.roleId) || PLAYER_ROLES[0];
@@ -156,6 +179,7 @@ export function createInitialGameState(opts: CreateGameOptions): GameRunState {
   const draftState: GameRunState = {
     saveId: opts.saveId || `got_save_${now}_${Math.random().toString(36).slice(2, 7)}`,
     version: 1,
+    campaignName: safeCampaignName || undefined,
     playerName: safeName,
     roleId: roleMeta.id,
     modeId: modeMeta.id,
@@ -299,17 +323,17 @@ export function applyCardChoice(
   // Over-saturation political dynamics
   let extraReason = '';
   if (state.indicators.people >= 95 && dPeople > 0) {
-    dNobles -= 3;
+    dNobles -= 2;
     extraReason =
       lang === 'en'
-        ? ' (Extreme popular power alarmed the nobility: Nobles -3)'
-        : ' (Halkın aşırı güçlenmesi soyluları tedirgin etti: Soylular -3)';
+        ? ' (Extreme popular power alarmed the nobility: Nobles -2)'
+        : ' (Halkın aşırı güçlenmesi soyluları tedirgin etti: Soylular -2)';
   } else if (state.indicators.nobles >= 95 && dNobles > 0) {
-    dPeople -= 3;
+    dPeople -= 2;
     extraReason =
       lang === 'en'
-        ? ' (Excessive noble privileges angered the smallfolk: People -3)'
-        : ' (Soyluların aşırı imtiyazı halkı rahatsız etti: Halk -3)';
+        ? ' (Excessive noble privileges angered the smallfolk: People -2)'
+        : ' (Soyluların aşırı imtiyazı halkı rahatsız etti: Halk -2)';
   } else if (state.indicators.treasury >= 95 && dTreasury > 0) {
     dMilitary -= 2;
     extraReason =
@@ -317,6 +341,15 @@ export function applyCardChoice(
         ? ' (Hoarded gold whetted mercenary appetites: Military -2)'
         : ' (Aşırı altın birikimi paralı askerlerin iştahını kabarttı: Askerî -2)';
   }
+
+  // Enforce strict difficulty bounds on final single-decision deltas:
+  // Easy: [-5, +10] | Normal: [-10, +10] | Hard: [-10, +7]
+  const bounds = getDifficultyBounds(difficultyId);
+  const clampToBounds = (d: number) => Math.max(bounds.minDrop, Math.min(bounds.maxGain, d));
+  dPeople = clampToBounds(dPeople);
+  dMilitary = clampToBounds(dMilitary);
+  dTreasury = clampToBounds(dTreasury);
+  dNobles = clampToBounds(dNobles);
 
   const nextIndicators: Indicators = {
     people: clampIndicator(state.indicators.people + dPeople),
@@ -568,14 +601,23 @@ export function upgradeGameMode(state: GameRunState): GameRunState {
 }
 
 /**
- * Safely renames the player in an active save without altering past logs or losing state (Section 14).
+ * Safely renames the player and/or campaign title in an active save without altering past logs or losing state (Section 14).
  */
-export function updatePlayerNameInRun(state: GameRunState, newRawName: string): GameRunState {
+export function updatePlayerNameInRun(
+  state: GameRunState,
+  newRawName: string,
+  newRawCampaignName?: string
+): GameRunState {
   const cleaned = sanitizePlayerName(newRawName);
+  const nextCampaignName =
+    newRawCampaignName !== undefined
+      ? sanitizeCampaignName(newRawCampaignName) || undefined
+      : state.campaignName;
   if (!cleaned) return state;
   return {
     ...state,
     playerName: cleaned,
+    campaignName: nextCampaignName,
     updatedAt: Date.now(),
   };
 }

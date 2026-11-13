@@ -8,7 +8,7 @@ import {
 } from '../data/categoriesAndEras';
 import { CHARACTER_MAP, CHARACTERS } from '../data/characters';
 import { ACHIEVEMENTS } from '../game/endingsAndAchievements';
-import { interpolateText, sanitizePlayerName } from '../game/engine';
+import { interpolateText, sanitizeCampaignName, sanitizePlayerName } from '../game/engine';
 import {
   getScenarioPoolManifest,
   materializeContextualCard,
@@ -416,7 +416,7 @@ interface SavedGamesModalProps {
   activeSaveId: string | null;
   language?: GameLanguage;
   onContinueSave: (save: GameRunState) => void;
-  onRenameSave: (saveId: string, newName: string) => void;
+  onRenameSave: (saveId: string, newName: string, newCampaignName?: string) => void;
   onDeleteSave: (saveId: string) => void;
   onDeleteAllSaves: () => void;
   onImportJson: (
@@ -438,6 +438,7 @@ export const SavedGamesModal: React.FC<SavedGamesModalProps> = ({
 }) => {
   const [renamingId, setRenamingId] = useState<string | null>(null);
   const [renameValue, setRenameValue] = useState('');
+  const [renameCampaignValue, setRenameCampaignValue] = useState('');
   const [confirmDeleteSaveTarget, setConfirmDeleteSaveTarget] = useState<GameRunState | null>(null);
   const [confirmDeleteAll, setConfirmDeleteAll] = useState<boolean>(false);
   const [detailsSave, setDetailsSave] = useState<GameRunState | null>(null);
@@ -648,11 +649,16 @@ export const SavedGamesModal: React.FC<SavedGamesModalProps> = ({
                     <div>
                       <div className="flex items-center gap-2 flex-wrap">
                         <h3 className="text-base font-bold font-display text-[#f5ebd6]">
-                          {titlePrefix} {save.playerName} – {modeName}
+                          {save.campaignName
+                            ? `${save.campaignName} (${titlePrefix} ${save.playerName})`
+                            : `${titlePrefix} ${save.playerName} – ${modeName}`}
                         </h3>
                         <span className="text-[11px] font-semibold px-2 py-0.5 rounded bg-[#251e30] text-[#d4af37] border border-[#b48e4b]/35">
                           {diffName}
                         </span>
+                        {save.campaignName && (
+                          <span className="text-[11px] text-[#b8a990]">{modeName}</span>
+                        )}
                       </div>
                       <div className="flex items-center gap-2 text-xs text-[#b8a990] mt-1 flex-wrap font-mono-tabular">
                         <span>
@@ -707,34 +713,44 @@ export const SavedGamesModal: React.FC<SavedGamesModalProps> = ({
 
                   {/* Rename Input if active */}
                   {renamingId === save.saveId && (
-                    <div className="mt-3 flex items-center gap-2">
+                    <div className="mt-3 p-2.5 rounded bg-[#100e14] border border-[#b48e4b]/30 flex flex-col sm:flex-row sm:items-center gap-2">
+                      <input
+                        type="text"
+                        value={renameCampaignValue}
+                        onChange={(e) => setRenameCampaignValue(e.target.value)}
+                        placeholder={isEn ? 'Custom game/save name...' : 'Oyuna özel kayıt adı...'}
+                        className="px-3 py-1.5 text-xs bg-[#181520] border border-[#b48e4b]/50 rounded text-[#f5ebd6] flex-1"
+                      />
                       <input
                         type="text"
                         value={renameValue}
                         onChange={(e) => setRenameValue(e.target.value)}
-                        placeholder={isEn ? 'New player name...' : 'Yeni oyuncu adı...'}
-                        className="px-3 py-1 text-xs bg-[#100e14] border border-[#d4af37] rounded text-[#f5ebd6]"
+                        placeholder={isEn ? 'Ruler / address name...' : 'Hükümdar / hitap ismi...'}
+                        className="px-3 py-1.5 text-xs bg-[#181520] border border-[#d4af37] rounded text-[#f5ebd6] flex-1"
                       />
-                      <button
-                        type="button"
-                        onClick={() => {
-                          const cleaned = sanitizePlayerName(renameValue);
-                          if (cleaned) {
-                            onRenameSave(save.saveId, cleaned);
-                            setRenamingId(null);
-                          }
-                        }}
-                        className="px-3 py-1 text-xs bg-[#d4af37] text-[#0b0a0e] font-bold rounded"
-                      >
-                        {isEn ? 'Save' : 'Kaydet'}
-                      </button>
-                      <button
-                        type="button"
-                        onClick={() => setRenamingId(null)}
-                        className="px-2.5 py-1 text-xs bg-[#272230] text-[#e8dcc4] rounded"
-                      >
-                        {isEn ? 'Cancel' : 'İptal'}
-                      </button>
+                      <div className="flex items-center gap-2">
+                        <button
+                          type="button"
+                          onClick={() => {
+                            const cleaned = sanitizePlayerName(renameValue);
+                            const cleanedCamp = sanitizeCampaignName(renameCampaignValue);
+                            if (cleaned) {
+                              onRenameSave(save.saveId, cleaned, cleanedCamp);
+                              setRenamingId(null);
+                            }
+                          }}
+                          className="px-3 py-1.5 text-xs bg-[#d4af37] text-[#0b0a0e] font-bold rounded"
+                        >
+                          {isEn ? 'Save' : 'Kaydet'}
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => setRenamingId(null)}
+                          className="px-2.5 py-1.5 text-xs bg-[#272230] text-[#e8dcc4] rounded"
+                        >
+                          {isEn ? 'Cancel' : 'İptal'}
+                        </button>
+                      </div>
                     </div>
                   )}
 
@@ -788,6 +804,7 @@ export const SavedGamesModal: React.FC<SavedGamesModalProps> = ({
                       onClick={() => {
                         setRenamingId(save.saveId);
                         setRenameValue(save.playerName);
+                        setRenameCampaignValue(save.campaignName || '');
                       }}
                       className="px-3 py-1.5 rounded bg-[#231e2d] hover:bg-[#2f283c] text-xs font-medium text-[#e8dcc4] border border-[#b48e4b]/30"
                     >
